@@ -8,7 +8,7 @@
 	if (isset($_POST['subidaFile'])){
 		//Mime types for validations
 		$mimes = array('application/vnd.ms-excel','text/plain','text/csv','text/tsv');
-		
+
 		$excel = new Excel($_FILES['files'], "files");
 		$excel->uploadFile($mimes, $_SERVER);
 

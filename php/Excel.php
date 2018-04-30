@@ -47,15 +47,12 @@ class Excel
         // Adding it all together. Note that you can use multiple validators or none at all
         $fileupload->setPathResolver($pathresolver);
         $fileupload->setFileSystem($filesystem);
-        $fileupload->addValidator($validator);
+        //TODO: Search MIME Type to files csv 
+        //$fileupload->addValidator($validator);
 
         // Doing the deed
         list($files, $headers) = $fileupload->processAll();
-
-        // Outputting it, for example like this
-        foreach($headers as $header => $value) {
-            header($header . ': ' . $value);
-        }
+        
     }
 
     /**
