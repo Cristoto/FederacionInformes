@@ -1,0 +1,29 @@
+{
+    "name": "Generador de informes",
+    "description": "Componente para la RFESS encargada de generar informes mediante un excel. ",
+    "license":  "LGPL-3.0",
+    "authors": [
+        {
+            "name": "Elvira",
+            "email": "elvirarguezluis@gmail.com"
+        },
+        {
+            "name": "Carlos Marrero Ramos",
+            "email": "carlosmr5@hotmail.com"
+        },
+        {
+            "name": "Cristo M. Estévez Hernández",
+            "email": "cristom.estevez@gmail.com"
+        }
+    ],
+    "require": {
+        "phpoffice/phpspreadsheet": "^1.2",
+        "gargron/fileupload": "~1.4.0",
+        "setasign/fpdf": "1.8.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "FederacionInformes\\php\\": "php/"
+        }
+}
+}

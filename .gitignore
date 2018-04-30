@@ -1,0 +1,25 @@
+# PhpStorm
+/.idea/
+
+# Visual Studio Code
+.vscode
+/~/
+
+# NetBeans
+/nbproject/
+
+# OS X
+.DS_Store
+
+# Eclipse config files
+.project
+.settings
+.buildpath
+*lock.json
+*.lock
+*.cache
+*.lock
+
+/node_modules/
+/files/
+/vendor/
