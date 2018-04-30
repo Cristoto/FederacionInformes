@@ -1,7 +1,9 @@
 <?php
+
 	namespace FederacionInformes;
 	use FederacionInformes\php\Excel;
 	use FederacionInformes\php\Consultas;
+	use FederacionInformes\php\PDF;
 	
 	require_once __DIR__ . '/vendor/autoload.php';
 	
@@ -126,6 +128,14 @@
 			$puntInicial = $_POST["puntInicial"];
 			$difPuntos = $_POST["difPuntos"];
 			$temporada = $_POST["temporada"];
+
+			$pdf = new PDF();
+$pdf->AliasNbPages();
+$pdf->AddPage();
+$pdf->SetFont('Times','',12);
+for($i=1;$i<=40;$i++)
+    $pdf->Cell(0,10,'Imprimiendo línea número '.$i,0,1);
+$pdf->Output();
 		}
 	?>
 

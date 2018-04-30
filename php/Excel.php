@@ -12,6 +12,8 @@ require_once __DIR__ . '/../vendor/autoload.php';
 /**
  * Clase encargada del manejo de los ficheros excel.
  * Subida de los ficheros en el servidor, cargar sus datos en la BD, etc.
+ * 
+ * @author Cristo M. Estévez Hernández <cristom.estevez@gmail.com>
  */
 class Excel
 {
