@@ -49,3 +49,10 @@ Descargar el zip del respositorio, descomprimirlo y en la carpeta ejecutar el co
 composer install
 ```
 
+# Problemas
+
+A continuación se menciona algunos problemas conocidos a la hora de la ejecución del programa y su correspondiente solución:
+
+**El programa no puede crear la carpeta "Files"**
+
+Para solventar este problema, simplemente debe modificar los permisos de la carpeta del proyecto para que cualquiera pueda escribir en dicho directorio.
