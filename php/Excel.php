@@ -29,12 +29,12 @@ class Excel
     * @param array $mimes Extensions of file permit.
     * @return void
     */
-    public function uploadFile(array $mimes) : void{
+    public function uploadFile(array $mimes, array $serverData) : void{
         
         $this->createDirectory($this->directory);
 
         // Simple validation (max file size 2MB and only two allowed mime types)
-        //$validator = new SimpleValidator('2M', $mimes);
+        $validator = new SimpleValidator('2M', $mimes);
 
         // Simple path resolver, where uploads will be put
         $pathresolver = new SimplePath($this->directory);
@@ -42,7 +42,7 @@ class Excel
         $filesystem = new SimpleFile();
 
         // FileUploader itself
-        $fileupload = new FileUpload($this->files , $_SERVER);
+        $fileupload = new FileUpload($this->files , $serverData);
 
         // Adding it all together. Note that you can use multiple validators or none at all
         $fileupload->setPathResolver($pathresolver);

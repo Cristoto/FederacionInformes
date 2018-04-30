@@ -10,7 +10,7 @@
 		$mimes = array('application/vnd.ms-excel','text/plain','text/csv','text/tsv');
 		
 		$excel = new Excel($_FILES['files'], "files");
-		$excel->uploadFile($mimes);
+		$excel->uploadFile($mimes, $_SERVER);
 
 		//loadFileIntoBD('Resultados.csv');
 
