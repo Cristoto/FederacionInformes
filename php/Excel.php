@@ -47,7 +47,7 @@ class Excel
         // Adding it all together. Note that you can use multiple validators or none at all
         $fileupload->setPathResolver($pathresolver);
         $fileupload->setFileSystem($filesystem);
-        //$fileupload->addValidator($validator);
+        $fileupload->addValidator($validator);
 
         // Doing the deed
         list($files, $headers) = $fileupload->processAll();
