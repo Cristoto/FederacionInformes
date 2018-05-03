@@ -1,8 +1,11 @@
 {
-    "name": "Generador de informes",
+    "name": "generadordeinformes",
+    "version": "1.0.0",
     "description": "Componente para la RFESS encargada de generar informes mediante un excel. ",
-    "version": "1.0",
-    "license": "LGPL-3.0",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Cristoto/FederacionInformes.git"
+    },
     "authors": [{
             "name": "M. Elvira Rodríguez Luis",
             "email": "elvirarguezluis@gmail.com"
@@ -16,15 +19,14 @@
             "email": "cristom.estevez@gmail.com"
         }
     ],
-    "require": {
-        "php": ">= 5.1",
-        "phpoffice/phpspreadsheet": "^1.2",
-        "gargron/fileupload": "~1.4.0",
-        "setasign/fpdf": "1.8.1"
-    },
-    "autoload": {
-        "psr-4": {
-            "FederacionInformes\\php\\": "php/"
-        }
+    "license": "LGPL-3.0",
+    "dependencies": {
+        "animate.css": "^3.6.1",
+        "jquery": "^3.3.1",
+        "bootstrap": "^4.1.1",
+        "hamburgers": "^0.9.3",
+        "select2": "^4.0.6-rc.1",
+        "popper.js": "^1.14.3",
+        "font-awesome": "^4.7.0"
     }
 }
