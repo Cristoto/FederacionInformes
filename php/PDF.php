@@ -2,6 +2,7 @@
 namespace FederacionInformes\php;
 
 require_once __DIR__ . '/../vendor/autoload.php';
+use FPDF;
 
 /**
  * Class to generate PDF
@@ -11,6 +12,18 @@ require_once __DIR__ . '/../vendor/autoload.php';
 class PDF extends FPDF
 {
 
+    private $title;
+
+    /**
+     * Title to header section of PDF file.
+     *
+     * @param string $title
+     */
+    function __construct(string $title){
+        parent::__construct();
+        $this->title = $title;
+    }
+
     /**
      * Configure header structure of PDF Files
      *
@@ -18,7 +31,7 @@ class PDF extends FPDF
      */
     function Header(){
         // Logo
-        $this->Image('logo_pb.png',10,8,33);
+        $this->Image('../Assets/images/logo_pb.png',10,8,33);
         // Arial bold 15
         $this->SetFont('Arial','B',15);
         // Movernos a la derecha
