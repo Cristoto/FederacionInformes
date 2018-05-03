@@ -1,9 +1,10 @@
 {
     "name": "Generador de informes",
     "description": "Componente para la RFESS encargada de generar informes mediante un excel. ",
+    "version": "1.0",
     "license": "LGPL-3.0",
     "authors": [{
-            "name": "Elvira",
+            "name": "M. Elvira Rodríguez Luis",
             "email": "elvirarguezluis@gmail.com"
         },
         {
@@ -25,5 +26,14 @@
         "psr-4": {
             "FederacionInformes\\php\\": "php/"
         }
+    },
+    "scripts": {
+        "auto-scripts": {},
+        "post-install-cmd": [
+            "npm install"
+        ],
+        "post-update-cmd": [
+            "npm update"
+        ]
     }
 }
