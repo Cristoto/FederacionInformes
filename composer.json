@@ -26,5 +26,14 @@
         "psr-4": {
             "FederacionInformes\\php\\": "php/"
         }
+    },
+    "scripts": {
+        "auto-scripts": {},
+        "post-install-cmd": [
+            "npm install"
+        ],
+        "post-update-cmd": [
+            "npm update"
+        ]
     }
 }

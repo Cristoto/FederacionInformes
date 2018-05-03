@@ -6,7 +6,8 @@
         "type": "git",
         "url": "git+https://github.com/Cristoto/FederacionInformes.git"
     },
-    "authors": [{
+    "authors": [
+        {
             "name": "M. Elvira Rodríguez Luis",
             "email": "elvirarguezluis@gmail.com"
         },
