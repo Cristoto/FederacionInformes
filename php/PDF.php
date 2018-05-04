@@ -30,15 +30,17 @@ class PDF extends FPDF
      * @return void
      */
     function Header(){
-        // Logo
-        $this->Image('Assets/images/RFESS.gif');
+        $this->Cell(10);
+        $this->Image('Assets/images/RFESS.gif', null, null, 30, 30);
         // Arial bold 15
         $this->SetFont('Arial','B',15);
         // Movernos a la derecha
-        $this->Cell(80);
+        $this->Cell(70);
         // Título
-        $this->Cell(30,10,'Title',1,0,'C');
+        $this->Cell(30,-10,'Title',1,0,'C');
         // Salto de línea
+        $this->Ln(20);
+        $this->Line(20, 45, 210-20, 45);
         $this->Ln(20);
     }
 
