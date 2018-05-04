@@ -132,10 +132,10 @@
 			ob_start();
 			$pdf = new PDF("Titulo");
 			$pdf->AliasNbPages();
-			$pdf->AddPage();
+			$pdf->AddPage('L');
 			$pdf->SetFont('Times','',12);
-			for($i=1;$i<=40;$i++)
-				$pdf->Cell(0,10,'Imprimiendo línea número '.$i,0,1);
+			$pdf->loadTable(["titulo1", "titulo2", "titulo2", "titulo2", "titulo2"], 
+							["content1", "content2", "content1", "content1", "content1"]);
 			$pdf->Output();
 			ob_end_flush(); 
 		}
