@@ -40,7 +40,7 @@ class PDF extends FPDF
         $this->Cell(30,-10,'Title',0,0,'C');
         // Salto de línea
         $this->Ln(20);
-        $this->Line(20, 45, 210-20, 45);
+        $this->Line(20,55,280,55);
     }
 
     /**
@@ -58,6 +58,7 @@ class PDF extends FPDF
     }
 
     public function loadTable(array $header, array $data){
+        $widthCells = 40;
         // Colors, line width and bold font
         $this->SetFillColor(255,0,0);
         $this->SetTextColor(255);
@@ -67,7 +68,7 @@ class PDF extends FPDF
         // Header
         //$w = array(40, 35, 40, 45);
         for($i=0;$i<count($header);$i++)
-            $this->Cell(40,7,$header[$i],1,0,'C',true);
+            $this->Cell($widthCells,7,$header[$i],1,0,'C',true);
         $this->Ln();
         // Color and font restoration
         $this->SetFillColor(224,235,255);
@@ -75,14 +76,19 @@ class PDF extends FPDF
         $this->SetFont('Arial');
         // Data
         $fill = false;
-        foreach($data as $row)
+        foreach($data as $content)
         {
-            $this->Cell(40, 6, $row, 'LR', 0, 'L', $fill);
-           
+            foreach ($content as $value) {
+                $this->Cell($widthCells, 6, $value, 'LR', 0, 'L', $fill);
+            }
             $this->Ln();
             $fill = !$fill;
+            /*$this->Cell(40, 6, $row, 'LR', 0, 'L', $fill);
+           
+            $this->Ln();
+            $fill = !$fill;*/
         }
         // Closing line
-        //$this->Cell(array_sum($w),0,'','T');
+        $this->Cell($widthCells*count($header),0,'','T');
     }
 }

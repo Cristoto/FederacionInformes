@@ -135,7 +135,9 @@
 			$pdf->AddPage('L');
 			$pdf->SetFont('Times','',12);
 			$pdf->loadTable(["titulo1", "titulo2", "titulo2", "titulo2", "titulo2"], 
-							["content1", "content2", "content1", "content1", "content1"]);
+							[["content1", "content2", "content1", "content1", "content1"], 
+							 ["content1", "content2", "content1", "content1", "content1"]
+							]);
 			$pdf->Output();
 			ob_end_flush(); 
 		}
