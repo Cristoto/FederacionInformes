@@ -130,7 +130,8 @@
 			$difPuntos = $_POST["difPuntos"];
 			$temporada = $_POST["temporada"];
 
-			createPDF();
+			$bd = new Consultas();
+			createPDF('Todos los competidores', [], $bd->getAllCompetidores());
 			
 		}
 	?>
