@@ -1,9 +1,12 @@
 <?php
+
 	namespace FederacionInformes;
 	use FederacionInformes\php\Excel;
 	use FederacionInformes\php\Consultas;
+	use FederacionInformes\php\PDF;
 	
 	require_once __DIR__ . '/vendor/autoload.php';
+	require_once 'functions.php';
 	
 	if (isset($_POST['subidaFile'])){
 		//Mime types for validations
@@ -126,6 +129,10 @@
 			$puntInicial = $_POST["puntInicial"];
 			$difPuntos = $_POST["difPuntos"];
 			$temporada = $_POST["temporada"];
+
+			$bd = new Consultas();
+			createPDF('Todos los competidores', [], $bd->getAllCompetidores());
+			
 		}
 	?>
 	
