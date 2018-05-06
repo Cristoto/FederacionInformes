@@ -6,6 +6,7 @@
 	use FederacionInformes\php\PDF;
 	
 	require_once __DIR__ . '/vendor/autoload.php';
+	require_once 'functions.php';
 	
 	if (isset($_POST['subidaFile'])){
 		//Mime types for validations
@@ -129,17 +130,8 @@
 			$difPuntos = $_POST["difPuntos"];
 			$temporada = $_POST["temporada"];
 
-			ob_start();
-			$pdf = new PDF("Titulo");
-			$pdf->AliasNbPages();
-			$pdf->AddPage('L');
-			$pdf->SetFont('Times','',12);
-			$pdf->loadTable(["titulo1", "titulo2", "titulo2", "titulo2", "titulo2"], 
-							[["content1", "content2", "content1", "content1", "content1"], 
-							 ["content1", "content2", "content1", "content1", "content1"]
-							]);
-			$pdf->Output();
-			ob_end_flush(); 
+			createPDF();
+			
 		}
 	?>
 	

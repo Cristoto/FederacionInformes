@@ -66,7 +66,6 @@ class PDF extends FPDF
         $this->SetLineWidth(.3);
         $this->SetFont('','B');
         // Header
-        //$w = array(40, 35, 40, 45);
         for($i=0;$i<count($header);$i++)
             $this->Cell($widthCells,7,$header[$i],1,0,'C',true);
         $this->Ln();
@@ -83,10 +82,6 @@ class PDF extends FPDF
             }
             $this->Ln();
             $fill = !$fill;
-            /*$this->Cell(40, 6, $row, 'LR', 0, 'L', $fill);
-           
-            $this->Ln();
-            $fill = !$fill;*/
         }
         // Closing line
         $this->Cell($widthCells*count($header),0,'','T');
