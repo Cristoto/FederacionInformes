@@ -1,9 +1,13 @@
 <?php
     
 namespace FederacionInformes\php;
-
 use PDO;
 
+/**
+ * Class to generate PDF
+ * 
+ * @author M. Elvira Rodríguez Luis
+ */
 class Consultas {
     private $pdo;
 
