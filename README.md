@@ -23,7 +23,7 @@ Para la implementación de dicho programa se utilizará:
 - JavaScript. 
 - Base de datos MySQL. 
 - Servidor web (local o remoto).
-
+- PHP
 
 
 # Requisitos
