@@ -21,7 +21,6 @@ Para la implementación de dicho programa se utilizará:
 - HTML5. 
 - CSS3. 
 - JavaScript. 
-- Symfony (PHP). 
 - Base de datos MySQL. 
 - Servidor web (local o remoto).
 
