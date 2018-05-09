@@ -155,8 +155,35 @@ class Consultas {
     }
     
     public function insertarCompetidor(array $competidor) {
-        $consulta = $this->pdo->prepare("INSERT INTO competidores VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
-        $consulta->execute($competidor);
+        $date = date("Y-m-d H:i:s");
+        echo  'valor '.$competidor[10];
+        echo  'tamaño '.strlen($competidor[10]);
+        $stmt = $this->pdo->prepare(
+            "INSERT INTO competidores (nombre, apellidos, anio, sexo, club, clubComunidad, competicion, fechaCompeticion, lugarCompeticion, comunidadCompeticion, tipoPiscina, prueba, agrupacion, categoria, tipoSerioe, ronda, tiempo, tiempoConvertido, posicion, exclusion, descalificado) 
+            VALUES (:nombre, :apellidos, :anio, :sexo, :club, :clubComunidad, :competicion, :fechaCompeticion, :lugarCompeticion, :comunidadCompeticion, :tipoPiscina, :prueba, :agrupacion, :categoria, :tipoSerioe, :ronda, :tiempo, :tiempoConvertido, :posicion, :exclusion, :descalificado)");
+        $stmt->bindParam(':nombre', $competidor[0], PDO::PARAM_STR, 20);
+        $stmt->bindParam(':apellidos', $competidor[1], PDO::PARAM_STR, 50);
+        $stmt->bindParam(':anio', $competidor[2], PDO::PARAM_INT);
+        $stmt->bindParam(':sexo', $competidor[3], PDO::PARAM_STR, 1);
+        $stmt->bindParam(':club', $competidor[4], PDO::PARAM_STR, 60);
+        $stmt->bindParam(':clubComunidad', $competidor[5], PDO::PARAM_STR, 60);
+        $stmt->bindParam(':competicion', $competidor[6], PDO::PARAM_STR, 60);
+        //$stmt->bindParam(':fechaCompeticion', $competidor[7], PDO::PARAM_STR); //***********
+        $stmt->bindParam(':fechaCompeticion', $date, PDO::PARAM_STR);        
+        $stmt->bindParam(':lugarCompeticion', $competidor[8], PDO::PARAM_STR, 60);
+        $stmt->bindParam(':comunidadCompeticion', $competidor[9], PDO::PARAM_STR, 60);
+        $stmt->bindParam(':tipoPiscina', $competidor[10], PDO::PARAM_STR, 8);
+        $stmt->bindParam(':prueba', $competidor[11], PDO::PARAM_STR, 60);
+        $stmt->bindParam(':agrupacion', $competidor[12], PDO::PARAM_STR, 100);
+        $stmt->bindParam(':categoria', $competidor[13], PDO::PARAM_STR, 20);
+        $stmt->bindParam(':tipoSerioe', $competidor[14], PDO::PARAM_STR, 30);
+        $stmt->bindParam(':ronda', $competidor[15], PDO::PARAM_INT);
+        $stmt->bindParam(':tiempo', $competidor[16], PDO::PARAM_STR);//*******
+        $stmt->bindParam(':tiempoConvertido', $competidor[17], PDO::PARAM_STR); //******
+        $stmt->bindParam(':posicion', $competidor[18], PDO::PARAM_INT);
+        $stmt->bindParam(':exclusion', $competidor[19], PDO::PARAM_STR, 20);
+        $stmt->bindParam(':descalificado', $competidor[20], PDO::PARAM_STR, 2);
+        $stmt->execute();
     }
 }
     //$consulta = new Consultas();

@@ -1,5 +1,6 @@
 <?php
 use FederacionInformes\php\PDF;
+use FederacionInformes\php\Consultas;
 require_once 'vendor/autoload.php';
 
 /**
@@ -9,6 +10,7 @@ require_once 'vendor/autoload.php';
  * @return void
  */
 function loadFileIntoBD(string $inputFileName) : void{
+	$consulta = new Consultas();
     try{
        $reader = new \PhpOffice\PhpSpreadsheet\Reader\Csv();
 	   
@@ -41,7 +43,7 @@ function loadFileIntoBD(string $inputFileName) : void{
 					$arrayFila[] = trim($cell->getValue());
 					
 				}
-			//insertarEnBD($arrayFila);
+			$consulta->insertarCompetidor($arrayFila);
 		}
 		
     }catch(\PhpOffice\PhpSpreadsheet\Reader\Exception $e){
