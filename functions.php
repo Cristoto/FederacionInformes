@@ -8,13 +8,14 @@ require_once 'vendor/autoload.php';
  * @param string $inputFileName Route with the name of the file
  * @return void
  */
+/*
 function loadFileIntoBD(string $inputFileName) : void{
 
     try{
-        /** Load $inputFileName to a Spreadsheet Object  **/
+        // Load $inputFileName to a Spreadsheet Object  
         $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($inputFileName);
 
-        /**Get all data using iterator */
+        // Get all data using iterator 
         $worksheet = $spreadsheet->getActiveSheet();
         
         foreach ($worksheet->getRowIterator() as $row) {
@@ -30,9 +31,9 @@ function loadFileIntoBD(string $inputFileName) : void{
         die('Error loading file: '.$e->getMessage());
     }
 }
+*/
 
-
-function DESARROLLOloadFileIntoBD(string $inputFileName) : void{
+function loadFileIntoBD(string $inputFileName) : void{
 //require 'vendor/autoload.php'; --arriba
 //DESARROLLOloadFileIntoBD('Resultados.csv'); --arriba
     try{
