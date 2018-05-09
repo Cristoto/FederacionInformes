@@ -38,7 +38,7 @@ function loadFileIntoBD(string $inputFileName) : void{
 			$arrayFila = array();
 
 				foreach ($cellIterator as $cell) {
-					$arrayFila[] = $cell->getValue();
+					$arrayFila[] = trim($cell->getValue());
 					
 				}
 			//insertarEnBD($arrayFila);
