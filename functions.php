@@ -46,11 +46,12 @@ function loadFileIntoBD(string $inputFileName) : void{
 		
 		$spreadsheet = $reader->load($inputFileName);
 		
-		//Get all data using iterator
 		$worksheet = $spreadsheet->getActiveSheet();
 		
 	    	//Se debe hacer lectura anticipada, o hacerle un next al iterador
 	    	//Manera no encontrada
+	    	//Se salta el primero para que no lea las cabeceras de las columnas
+	    
 		$cutradaParaSaltarPrimero = 0;
 		foreach ($worksheet->getRowIterator() as $row) {
 			if($cutradaParaSaltarPrimero == 0){
@@ -66,10 +67,9 @@ function loadFileIntoBD(string $inputFileName) : void{
 				foreach ($cellIterator as $cell) {
 					
 					$arrayFila[] = $cell->getValue();
-					//insertarEnBD($arrayFila);
-
+					
 				}
-
+			//insertarEnBD($arrayFila);
 		}
 		
     }catch(\PhpOffice\PhpSpreadsheet\Reader\Exception $e){
