@@ -18,7 +18,7 @@
     ],
     "require": {
         "php": ">= 5.1",
-        "phpoffice/phpspreadsheet": "^1.2",
+        "phpoffice/phpspreadsheet": "^1.1",
         "gargron/fileupload": "~1.4.0",
         "setasign/fpdf": "1.8.1"
     },
