@@ -4,7 +4,9 @@ namespace FederacionInformes\php;
 use PDO;
 
 /**
- * Class to generate PDF
+ * Clase encargada de realizar las consultas con la BD.
+ * Realiza la conexión, la inserción de datos del fichero Excel en la base de datos
+ * y las consultas necesarias para obtener los datos de los informes.
  * 
  * @author M. Elvira Rodríguez Luis
  */
@@ -147,9 +149,21 @@ class Consultas {
 
         return $data;
     }    
+
+    public function informeClubes() {
+
+    }
+    
+    public function insertarCompetidor(array $competidor) {
+        $consulta = $this->pdo->prepare("INSERT INTO competidores VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+        $consulta->execute($competidor);
+    }
 }
     //$consulta = new Consultas();
     //header('Content-Type: application/json');
     //echo json_encode($consulta->informeCategoria('Infantil'));
     //echo json_encode($consulta->getCompetidoresCategoria('Infantil', 'F', '100 m. natación con obstáculos'));
+
+    /*$array = ['PEDRO', 'PEREZ', 'M'];
+    $consulta->insertarCompetidor($array);*/
 ?>
