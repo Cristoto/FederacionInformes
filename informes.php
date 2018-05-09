@@ -14,8 +14,10 @@
 
 		$excel = new Excel($_FILES['files'], "files");
 		$excel->uploadFile($mimes, $_SERVER);
-
-		loadFileIntoBD('Resultados.csv');
+		
+		$nombreFichero = $_FILES['files']['name'];
+			
+		loadFileIntoBD('./files/'.$nombreFichero);
 
 		//$smb = new Consultas();
 		//var_dump($smb);
