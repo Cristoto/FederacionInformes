@@ -29,15 +29,10 @@ Para la implementación de dicho programa se utilizará:
 # Requisitos
 
 - PHP 5 o superior.
-
 - Composer.
-
 - Asegurar que la extensión "fileinfo" está habilitada en el php.ini.
-
 - Tu php.ini debe tener la siguiente directiva activada:
-
   > file_uploads = On
-
 
 
 # Instalación
@@ -45,10 +40,18 @@ Para la implementación de dicho programa se utilizará:
 - Instalar el servidor al gusto (apache, nginX, etc) que pueda ejecutar código PHP
 - Instalar Composer
 - Descargar el zip del respositorio, descomprimirlo en la carpeta pública del servidor
-- En la carpeta ejecutar el comando:
+- En la carpeta donde se haya descomprimido ejecutar el comando (por ejemplo desde consola de git):
 ```
 composer install
 ```
+# Dependencias
+
+Se utiliza Composer para satisfacer las librerías requeridas, no hay que realizar ninguna configuración, a modo de información son las siguientes librerías:
+
+- phpoffice/phpspreadsheet: "1.1" (IMPORTANTE versión 1.1, con la 1.2 el código no funciona)
+- gargron/fileupload: "~1.4.0"
+- setasign/fpdf: "1.8.1"
+
 
 # Problemas
 
