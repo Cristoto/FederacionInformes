@@ -38,7 +38,7 @@ Para la implementación de dicho programa se utilizará:
 
 # Instalación
 
-- Instalar el servidor al gusto (apache, nginX, etc) que pueda ejecutar código PHP
+- Instalar el servidor web al gusto (apache, nginX, etc) que pueda ejecutar código PHP
 - Instalar Composer
 - Descargar el zip del respositorio, descomprimirlo en la carpeta pública del servidor
 - En la carpeta donde se haya descomprimido ejecutar el comando (por ejemplo desde consola de git):
