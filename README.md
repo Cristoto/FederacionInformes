@@ -32,6 +32,7 @@ Para la implementación de dicho programa se utilizará:
 - Composer.
 - Asegurar que la extensión "fileinfo" está habilitada en el php.ini.
 - Tu php.ini debe tener la siguiente directiva activada:
+
   > file_uploads = On
 
 
