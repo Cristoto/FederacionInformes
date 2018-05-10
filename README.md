@@ -25,6 +25,15 @@ Para la implementación de dicho programa se utilizará:
 - Servidor web (local o remoto).
 - PHP
 
+# Requisitos
+
+- PHP 5 o superior.
+- Composer.
+- Asegurar que la extensión "fileinfo" está habilitada en el php.ini.
+- Tu php-ini debe tener la siguiente directiva activada.
+
+  > file_uploads = On
+
 # Instalación
 
 - Instalar el servidor web al gusto (apache, nginX, etc) que pueda ejecutar código PHP
