@@ -25,7 +25,6 @@ Para la implementación de dicho programa se utilizará:
 - Servidor web (local o remoto).
 - PHP
 
-
 # Requisitos
 
 - PHP 5 o superior.
@@ -34,7 +33,6 @@ Para la implementación de dicho programa se utilizará:
 - Tu php.ini debe tener la siguiente directiva activada:
 
   > file_uploads = On
-
 
 # Instalación
 
@@ -52,7 +50,6 @@ Se utiliza Composer para satisfacer las librerías requeridas, no hay que realiz
 - phpoffice/phpspreadsheet: "1.1" (IMPORTANTE versión 1.1, con la 1.2 el código no funciona)
 - gargron/fileupload: "~1.4.0"
 - setasign/fpdf: "1.8.1"
-
 
 # Problemas
 
