@@ -4,7 +4,7 @@ Aplicación destinada a la centralización de datos de jornadas deportivas (tiem
 
 # Especificación de requisitos 
 
-- La aplicación se encargará de realizar las siguientes acciones: 
+La aplicación se encargará de realizar las siguientes acciones: 
 - Será una aplicación web para poder ser accesible desde cualquier sitio y desde cualquier dispositivo. 
 - Se cargará un fichero “Excel” descargado de la federación española con un formato concreto y dichos datos del fichero se centralizarán. 
 - El usuario especifica cuantos participantes puntúan de un determinado equipo. 
@@ -42,8 +42,10 @@ Para la implementación de dicho programa se utilizará:
 
 # Instalación
 
-Descargar el zip del respositorio, descomprimirlo y en la carpeta ejecutar el comando:
-
+- Instalar el servidor al gusto (apache, nginX, etc) que pueda ejecutar código PHP
+- Instalar Composer
+- Descargar el zip del respositorio, descomprimirlo en la carpeta pública del servidor
+- En la carpeta ejecutar el comando:
 ```
 composer install
 ```
