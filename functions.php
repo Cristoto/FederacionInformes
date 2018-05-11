@@ -43,7 +43,6 @@ function loadFileIntoBD(string $inputFileName) : void{
 			}
 			
 			if($arrayFila[0] != '') {
-				var_dump($arrayFila[7]);
 				$consulta->insertarCompetidor($arrayFila);
 			}
 			

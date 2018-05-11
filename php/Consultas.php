@@ -149,53 +149,71 @@ class Consultas {
 
         return $data;
     }    
-
-    public function informeClubes() {
-
+    
+    public function utf8_decode($string){
+        $string = str_replace("\n","[NEWLINE]",$string);
+        $string=htmlentities($string);
+        $string=preg_replace('/[^(\x20-\x7F)]*/','',$string);
+        $string=html_entity_decode($string);     
+        $string = str_replace("[NEWLINE]","\n",$string);
+        return $string;
     }
     
     public function insertarCompetidor(array $competidor) {
-        $date = date("Y-m-d");
-        $tiempo = substr($competidor[16], 3, -1);
-        $tiempoConvertido = substr($competidor[17], 3, -1);        
-        $timeFormat = date("H:i:s");
-
-        /*echo  'valor '.$competidor[20];
-        echo  'tamaño '.strlen($competidor[20]);*/
-
+        $date = $this->formatDate($competidor[7]);
+        
+        $text = $this->utf8_decode($competidor[16]);
+        $tiempo = str_replace ('=' , '' , str_replace ('"' , '' , $text));
+        if($tiempo == "")
+            $tiempo = null;
+        $timeConvert = $this->formatTime($competidor[17]);   
+    
         $stmt = $this->pdo->prepare(
             "INSERT INTO competidores (nombre, apellidos, anio, sexo, club, clubComunidad, competicion, fechaCompeticion, lugarCompeticion, comunidadCompeticion, tipoPiscina, prueba, agrupacion, categoria, tipoSerioe, ronda, tiempo, tiempoConvertido, posicion, exclusion, descalificado) 
             VALUES (:nombre, :apellidos, :anio, :sexo, :club, :clubComunidad, :competicion, :fechaCompeticion, :lugarCompeticion, :comunidadCompeticion, :tipoPiscina, :prueba, :agrupacion, :categoria, :tipoSerioe, :ronda, :tiempo, :tiempoConvertido, :posicion, :exclusion, :descalificado)");
-        $stmt->bindParam(':nombre', $competidor[0], PDO::PARAM_STR, 50);
-        $stmt->bindParam(':apellidos', $competidor[1], PDO::PARAM_STR, 100);
+        $stmt->bindParam(':nombre', $competidor[0], PDO::PARAM_STR, 25);
+        $stmt->bindParam(':apellidos', $competidor[1], PDO::PARAM_STR, 65);
         $stmt->bindParam(':anio', $competidor[2], PDO::PARAM_INT);
         $stmt->bindParam(':sexo', $competidor[3], PDO::PARAM_STR, 1);
         $stmt->bindParam(':club', $competidor[4], PDO::PARAM_STR, 60);
         $stmt->bindParam(':clubComunidad', $competidor[5], PDO::PARAM_STR, 60);
         $stmt->bindParam(':competicion', $competidor[6], PDO::PARAM_STR, 60);
-        //$stmt->bindParam(':fechaCompeticion', $competidor[7], PDO::PARAM_STR); //***********
-        $stmt->bindParam(':fechaCompeticion', $date, PDO::PARAM_STR);        
+        $stmt->bindParam(':fechaCompeticion', $date);
         $stmt->bindParam(':lugarCompeticion', $competidor[8], PDO::PARAM_STR, 60);
         $stmt->bindParam(':comunidadCompeticion', $competidor[9], PDO::PARAM_STR, 60);
-        $stmt->bindParam(':tipoPiscina', $competidor[10], PDO::PARAM_STR, 10);
-        $stmt->bindParam(':prueba', $competidor[11], PDO::PARAM_STR, 255);
-        $stmt->bindParam(':agrupacion', $competidor[12], PDO::PARAM_STR, 255);
+        $stmt->bindParam(':tipoPiscina', $competidor[10], PDO::PARAM_STR, 5);
+        $stmt->bindParam(':prueba', $competidor[11], PDO::PARAM_STR, 100);
+        $stmt->bindParam(':agrupacion', $competidor[12], PDO::PARAM_STR, 130);
         $stmt->bindParam(':categoria', $competidor[13], PDO::PARAM_STR, 20);
         $stmt->bindParam(':tipoSerioe', $competidor[14], PDO::PARAM_STR, 30);
         $stmt->bindParam(':ronda', $competidor[15], PDO::PARAM_INT);
-        $stmt->bindParam(':tiempo', $timeFormat , PDO::PARAM_STR);//*******
-        $stmt->bindParam(':tiempoConvertido', $timeFormat, PDO::PARAM_STR); //******
+        $stmt->bindParam(':tiempo', $tiempo, PDO::PARAM_STR, 8);
+        $stmt->bindParam(':tiempoConvertido', $timeConvert);
         $stmt->bindParam(':posicion', $competidor[18], PDO::PARAM_INT);
         $stmt->bindParam(':exclusion', $competidor[19], PDO::PARAM_STR, 50);
         $stmt->bindParam(':descalificado', $competidor[20], PDO::PARAM_STR, 4);
         $stmt->execute();
+    }
+
+    private function formatDate($competidor){
+        $text = $this->utf8_decode($competidor);  					
+        $arrayF = explode("/", $text);
+        $formatDate = $arrayF[1].'/'.$arrayF[0].'/'.$arrayF[2];
+        $date = date("Y-m-d", strtotime($formatDate));
+        return $date;
+    }
+
+    private function formatTime($competidor){
+        $text = $this->utf8_decode($competidor);
+        $tiempo = str_replace ('=' , '' , str_replace ('"' , '' , $text));
+        $time = null;
+        if($tiempo != "")
+            $time = date('H:i:s', strtotime($tiempo));         
+        return $time;
     }
 }
     //$consulta = new Consultas();
     //header('Content-Type: application/json');
     //echo json_encode($consulta->informeCategoria('Infantil'));
     //echo json_encode($consulta->getCompetidoresCategoria('Infantil', 'F', '100 m. natación con obstáculos'));
-
-    /*$array = ['PEDRO', 'PEREZ', 'M'];
-    $consulta->insertarCompetidor($array);*/
 ?>
