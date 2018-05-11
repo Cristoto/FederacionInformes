@@ -3,16 +3,6 @@ use FederacionInformes\php\PDF;
 use FederacionInformes\php\Consultas;
 require_once 'vendor/autoload.php';
 
-
-function _utf8_decode($string) {
-	$string = str_replace("\n","[NEWLINE]",$string);
-	$string = htmlentities($string);
-	$string = preg_replace('/[^(\x20-\x7F)]*/','',$string);
-	$string = html_entity_decode($string);     
-	$string = str_replace("[NEWLINE]","\n",$string);
-	return $string;
-}
-
 /**
  * Load data file into db
  *
@@ -63,6 +53,19 @@ function loadFileIntoBD(string $inputFileName) : void{
     }
 }
 
+/**
+ * Elimina los caracteres extraños y los caracteres binarios de una cadena de texto.
+ * @param string $string Cadena a "limpiar".
+ * @return string Devuelve la cadena que recibió (como parámetro) "limpia", es decir, sin caracteres raros.
+ */
+function _utf8_decode($string) {
+	$string = str_replace("\n","[NEWLINE]",$string);
+	$string = htmlentities($string);
+	$string = preg_replace('/[^(\x20-\x7F)]*/','',$string);
+	$string = html_entity_decode($string);     
+	$string = str_replace("[NEWLINE]","\n",$string);
+	return $string;
+}
 
 /**
  * Create a PDF with specify content
@@ -81,4 +84,12 @@ function createPDF(string $title, array $header, array $content){
 		$pdf->loadTable($header, $content);
 		$pdf->Output();
 	ob_end_flush(); 
+}
+
+function puntos($bloqueo, $cantParticipantes, $puntInicial, $difPuntos, $temporada) {
+	$puntos = [];
+	array_push($puntos, $puntInicial);
+	for ($i = 1; $i < $cantParticipantes ; $i++) { 
+		array_push($puntos, $puntos[$i-1] + $difPuntos);
+	}
 }

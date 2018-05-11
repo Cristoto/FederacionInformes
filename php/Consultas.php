@@ -75,7 +75,7 @@ class Consultas {
      * @return array
      */
     public function getTemporadas(){
-        $stmt = $this->pdo->prepare("SELECT DISTINCT fechaCompeticion FROM competidores");
+        $stmt = $this->pdo->prepare("SELECT DISTINCT competicion FROM competidores");
         $stmt->execute();
 
         return $stmt->fetchAll();  
@@ -149,21 +149,7 @@ class Consultas {
 
         return $data;
     }    
-    
-    /**
-     * Elimina los caracteres extraños y los caracteres binarios de una cadena de texto.
-     * @param string $string Cadena a "limpiar".
-     * @return string Devuelve la cadena que recibió (como parámetro) "limpia", es decir, sin caracteres raros.
-     */
-    public function utf8_decode($string){
-        $string = str_replace("\n","[NEWLINE]",$string);
-        $string = htmlentities($string);
-        $string = preg_replace('/[^(\x20-\x7F)]*/','',$string);
-        $string = html_entity_decode($string);     
-        $string = str_replace("[NEWLINE]","\n",$string);
-        return $string;
-    }
-    
+
     /**
      * Realiza la inserción de los competidores a través de un array con sus datos que recibe como parámetro.
      * @param array $competidor
@@ -171,9 +157,8 @@ class Consultas {
     public function insertarCompetidor(array $competidor) {
         $date = $this->formatDate($competidor[7]);
         
-        //Limpia la cadena tiempo de caracteres raros y elimina algunos caracteres que recibe de forma errónea.
-        $text = $this->utf8_decode($competidor[16]);
-        $tiempo = str_replace ('=' , '' , str_replace ('"' , '' , $text));
+        //Elimina algunos caracteres que recibe de forma errónea.
+        $tiempo = str_replace ('=' , '' , str_replace ('"' , '' , $competidor[16]));
         //En caso de que no tenga tiempo ese competidor se coloca el campo a null.
         if($tiempo == "")
             $tiempo = null;
@@ -211,9 +196,8 @@ class Consultas {
      * @param string $competidor Fecha competición.
      * @return date Devuelve la fecha convertida para insertarla.
      */
-    private function formatDate($competidor){
-        $text = $this->utf8_decode($competidor);  					
-        $arrayF = explode("/", $text);
+    private function formatDate($competidor){  					
+        $arrayF = explode("/", $competidor);
         $formatDate = $arrayF[1].'/'.$arrayF[0].'/'.$arrayF[2];
         $date = date("Y-m-d", strtotime($formatDate));
         return $date;
@@ -225,8 +209,7 @@ class Consultas {
      * @return date Devuelve el tiempo convertido para insertarlo.
      */
     private function formatTime($competidor){
-        $text = $this->utf8_decode($competidor);
-        $tiempo = str_replace ('=' , '' , str_replace ('"' , '' , $text));
+        $tiempo = str_replace ('=' , '' , str_replace ('"' , '' , $competidor));
         $time = null;
         if($tiempo != "")
             $time = date('H:i:s', strtotime($tiempo));         
