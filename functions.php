@@ -14,7 +14,7 @@ function loadFileIntoBD(string $inputFileName) : void{
     try{
        $reader = new \PhpOffice\PhpSpreadsheet\Reader\Csv();
 	   
-		//$reader->setInputEncoding('CP1252');
+		$reader->setInputEncoding('CP1252');
 		$reader->setDelimiter(';');
 		$reader->setEnclosure('');
 		$reader->setSheetIndex(0);
