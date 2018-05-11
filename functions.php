@@ -38,14 +38,12 @@ function loadFileIntoBD(string $inputFileName) : void{
 			$cellIterator->setIterateOnlyExistingCells(FALSE);
 			
 			$arrayFila = array();
-
-				foreach ($cellIterator as $cell) {
-					$arrayFila[] = trim($cell->getValue());
-					
-				}
+			foreach ($cellIterator as $cell) {
+				$arrayFila[] = trim($cell->getValue());				
+			}
 			$consulta->insertarCompetidor($arrayFila);
 		}
-		
+				
     }catch(\PhpOffice\PhpSpreadsheet\Reader\Exception $e){
         die('Error loading file: '.$e->getMessage());
     }
