@@ -41,7 +41,11 @@ function loadFileIntoBD(string $inputFileName) : void{
 			foreach ($cellIterator as $cell) {
 				$arrayFila[] = trim($cell->getValue());				
 			}
-			$consulta->insertarCompetidor($arrayFila);
+			
+			if($arrayFila[0] != '') {
+				$consulta->insertarCompetidor($arrayFila);
+			}
+			
 		}
 				
     }catch(\PhpOffice\PhpSpreadsheet\Reader\Exception $e){
