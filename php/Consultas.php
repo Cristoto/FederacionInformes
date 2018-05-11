@@ -37,7 +37,7 @@ class Consultas {
     }
     
     /**
-     * Obtiene todos los generos que existentes.
+     * Obtiene todos los géneros que existentes.
      * @return array
      */
     public function getGeneros() {
@@ -59,7 +59,7 @@ class Consultas {
     }
 
     /**
-     * Obtiene todas las categorias que existentes.
+     * Obtiene todas las categorías que existentes.
      * @return array
      */
     public function getCategoria() {
@@ -82,7 +82,7 @@ class Consultas {
     }
 
     /**
-     * Devuelve toda la informacion de los competidores.
+     * Devuelve toda la información de los competidores.
      * @return array
      */
     public function getAllCompetidores() {
@@ -93,7 +93,7 @@ class Consultas {
     }
 
     /**
-     * Obtiene todos los competidores correspondientes a los parametros indicados.
+     * Obtiene todos los competidores correspondientes a los parámetros indicados.
      * @param string $categoria
      * @param string $sexo
      * @param string $prueba
@@ -123,7 +123,7 @@ class Consultas {
     }
 
     /**
-     * Devuelve un array con la estructura necesaria para generar el informe por categorias.
+     * Devuelve un array con la estructura necesaria para generar el informe por categorías.
      * @param string $categoria
      * @return array
      */
@@ -150,20 +150,31 @@ class Consultas {
         return $data;
     }    
     
+    /**
+     * Elimina los caracteres extraños y los caracteres binarios de una cadena de texto.
+     * @param string $string Cadena a "limpiar".
+     * @return string Devuelve la cadena que recibió (como parámetro) "limpia", es decir, sin caracteres raros.
+     */
     public function utf8_decode($string){
         $string = str_replace("\n","[NEWLINE]",$string);
-        $string=htmlentities($string);
-        $string=preg_replace('/[^(\x20-\x7F)]*/','',$string);
-        $string=html_entity_decode($string);     
+        $string = htmlentities($string);
+        $string = preg_replace('/[^(\x20-\x7F)]*/','',$string);
+        $string = html_entity_decode($string);     
         $string = str_replace("[NEWLINE]","\n",$string);
         return $string;
     }
     
+    /**
+     * Realiza la inserción de los competidores a través de un array con sus datos que recibe como parámetro.
+     * @param array $competidor
+     */
     public function insertarCompetidor(array $competidor) {
         $date = $this->formatDate($competidor[7]);
         
+        //Limpia la cadena tiempo de caracteres raros y elimina algunos caracteres que recibe de forma errónea.
         $text = $this->utf8_decode($competidor[16]);
         $tiempo = str_replace ('=' , '' , str_replace ('"' , '' , $text));
+        //En caso de que no tenga tiempo ese competidor se coloca el campo a null.
         if($tiempo == "")
             $tiempo = null;
         $timeConvert = $this->formatTime($competidor[17]);   
@@ -195,6 +206,11 @@ class Consultas {
         $stmt->execute();
     }
 
+    /**
+     * Convierte el campo fecha competición de string a tipo fecha para que pueda insertarse en la base de datos.
+     * @param string $competidor Fecha competición.
+     * @return date Devuelve la fecha convertida para insertarla.
+     */
     private function formatDate($competidor){
         $text = $this->utf8_decode($competidor);  					
         $arrayF = explode("/", $text);
@@ -203,6 +219,11 @@ class Consultas {
         return $date;
     }
 
+    /**
+     * Convierte el tiempo que es de tipo string a tipo date en formato time aceptado por la base de datos.
+     * @param string $competidor Tiempo.
+     * @return date Devuelve el tiempo convertido para insertarlo.
+     */
     private function formatTime($competidor){
         $text = $this->utf8_decode($competidor);
         $tiempo = str_replace ('=' , '' , str_replace ('"' , '' , $text));
