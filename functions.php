@@ -3,6 +3,16 @@ use FederacionInformes\php\PDF;
 use FederacionInformes\php\Consultas;
 require_once 'vendor/autoload.php';
 
+
+function _utf8_decode($string) {
+	$string = str_replace("\n","[NEWLINE]",$string);
+	$string = htmlentities($string);
+	$string = preg_replace('/[^(\x20-\x7F)]*/','',$string);
+	$string = html_entity_decode($string);     
+	$string = str_replace("[NEWLINE]","\n",$string);
+	return $string;
+}
+
 /**
  * Load data file into db
  *
@@ -39,7 +49,7 @@ function loadFileIntoBD(string $inputFileName) : void{
 			
 			$arrayFila = array();
 			foreach ($cellIterator as $cell) {
-				$arrayFila[] = trim($cell->getValue());				
+				$arrayFila[] = _utf8_decode(trim($cell->getValue()));				
 			}
 			
 			if($arrayFila[0] != '') {
@@ -52,6 +62,7 @@ function loadFileIntoBD(string $inputFileName) : void{
         die('Error loading file: '.$e->getMessage());
     }
 }
+
 
 /**
  * Create a PDF with specify content
