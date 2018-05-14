@@ -6,7 +6,7 @@ Aplicación destinada a la centralización de datos de jornadas deportivas (tiem
 
 La aplicación se encargará de realizar las siguientes acciones: 
 - Será una aplicación web para poder ser accesible desde cualquier sitio y desde cualquier dispositivo. 
-- Se cargará un fichero “Excel” descargado de la federación española con un formato concreto y dichos datos del fichero se centralizarán. 
+- Se cargará un fichero “Csv” descargado de la federación española con un formato concreto y dichos datos del fichero se centralizarán. 
 - El usuario especifica cuantos participantes puntúan de un determinado equipo. 
 - El usuario especificará si quiere utilizar el bloqueo de puntos o no. 
 - El usuario indicará la puntuación de cada puesto. 
