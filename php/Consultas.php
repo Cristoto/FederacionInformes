@@ -253,7 +253,7 @@ class Consultas {
      * @return void
      */
     public function deleteAll(){
-        $stmt = $this->pdo->prepare('DELETE FROM competidores');
+        $stmt = $this->pdo->prepare('TRUNCATE TABLE competidores');
         $stmt->execute();
     }
 

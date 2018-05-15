@@ -16,8 +16,8 @@
 		$excel->uploadFile($mimes, $_SERVER);
 		$excel->loadDataIntoBD();
 		Excel::deleteFiles();
-
 	}
+	$smb = new Consultas();
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -95,8 +95,7 @@
 						<div class="wrap-input3 input3-select" style="display:block" required>
 							<div>
 								<select class="selection-2" name="temporada">
-								<?php
-									$smb = new Consultas(); 
+								<?php									 
 									$temporadas = $smb -> getTemporadas();									
 									foreach ($temporadas as $temporada) {
 										$year = date('Y', strtotime($temporada["fechaCompeticion"]));
@@ -125,13 +124,12 @@
 			$difPuntos = $_POST["difPuntos"];
 			$temporada = $_POST["temporada"];
 
-			$bd = new Consultas();
-			$p = $bd->informeCategoria('Absoluto');
+			$p = $smb->informeCategoria('Absoluto');
 			var_dump($p);
 			//createPDF('Categoría absoluto', [], $p);
-			//createPDF('Todos los competidores', [], $bd->getAllCompetidores());
-			$bd->deleteAll();
-			$bd->closeConnection();
+			//createPDF('Todos los competidores', [], $smb->getAllCompetidores());
+			$smb->deleteAll();
+			$smb->closeConnection();
 		}
 	?>
 	
