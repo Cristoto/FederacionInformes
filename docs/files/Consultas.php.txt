@@ -11,17 +11,28 @@ use PDO;
  * @author M. Elvira Rodríguez Luis
  */
 class Consultas {
+
+    /**
+     * Objeto para realizar consultas a la bd
+     *
+     * @var PDO
+     */
     private $pdo;
 
+    /**
+     * Constructor encargado de montar la base de la conexión
+     */
     function __construct(){
         $this->conectar();
     }
 
     /**
      * Realiza la conexión con la base de datos.
+     * 
      * @return void
      */
-    private function conectar() {
+    private function conectar() : void
+    {
         $host = 'localhost';
         $dbname = 'db_competiciones';
         $user = 'root';
@@ -38,9 +49,11 @@ class Consultas {
     
     /**
      * Obtiene todos los géneros que existentes.
+     * 
      * @return array
      */
-    public function getGeneros() {
+    public function getGeneros() : array
+    {
         $stmt = $this->pdo->prepare("SELECT DISTINCT sexo FROM competidores");
         $stmt->execute();
 
@@ -49,9 +62,11 @@ class Consultas {
 
     /**
      * Obtiene todas las pruebas que existentes.
+     * 
      * @return array
      */
-    public function getPruebas() {
+    public function getPruebas() : array
+    {
         $stmt = $this->pdo->prepare("SELECT DISTINCT prueba FROM competidores");
         $stmt->execute();
 
@@ -60,9 +75,11 @@ class Consultas {
 
     /**
      * Obtiene todas las categorías que existentes.
+     * 
      * @return array
      */
-    public function getCategoria() {
+    public function getCategoria() : array
+    {
         $stmt = $this->pdo->prepare("SELECT DISTINCT categoria FROM competidores");
         $stmt->execute();
 
@@ -74,7 +91,8 @@ class Consultas {
      *
      * @return array
      */
-    public function getTemporadas(){
+    public function getTemporadas() : array
+    {
         $stmt = $this->pdo->prepare("SELECT DISTINCT competicion FROM competidores");
         $stmt->execute();
 
@@ -83,9 +101,11 @@ class Consultas {
 
     /**
      * Devuelve toda la información de los competidores.
+     * 
      * @return array
      */
-    public function getAllCompetidores() {
+    public function getAllCompetidores() : array
+    {
         $stmt = $this->pdo->prepare('SELECT * FROM competidores');
         $stmt->execute();
         
@@ -94,12 +114,14 @@ class Consultas {
 
     /**
      * Obtiene todos los competidores correspondientes a los parámetros indicados.
+     * 
      * @param string $categoria
      * @param string $sexo
      * @param string $prueba
      * @return array
      */
-    public function getCompetidoresCategoria(string $categoria, string $sexo, string $prueba) {
+    public function getCompetidoresCategoria(string $categoria, string $sexo, string $prueba) : array
+    {
         $stmt = $this->pdo->prepare("SELECT nombre, apellidos, anio, club, tipoPiscina FROM competidores WHERE categoria = :categoria AND sexo = :sexo AND prueba = :prueba");
         $stmt->bindParam(':categoria', $categoria, PDO::PARAM_STR, 20);
         $stmt->bindParam(':sexo', $sexo, PDO::PARAM_STR, 1);
@@ -124,10 +146,12 @@ class Consultas {
 
     /**
      * Devuelve un array con la estructura necesaria para generar el informe por categorías.
+     * 
      * @param string $categoria
      * @return array
      */
-    public function informeCategoria(string $categoria) {
+    public function informeCategoria(string $categoria) : array
+    {
         $generos = $this->getGeneros();
         $pruebas = $this->getPruebas();
         
@@ -152,9 +176,12 @@ class Consultas {
 
     /**
      * Realiza la inserción de los competidores a través de un array con sus datos que recibe como parámetro.
+     * 
      * @param array $competidor
+     * @return void
      */
-    public function insertarCompetidor(array $competidor) {
+    public function insertarCompetidor(array $competidor) : void
+    {
         $date = $this->formatDate($competidor[7]);
         
         //Elimina algunos caracteres que recibe de forma errónea.
@@ -193,10 +220,12 @@ class Consultas {
 
     /**
      * Convierte el campo fecha competición de string a tipo fecha para que pueda insertarse en la base de datos.
+     * 
      * @param string $competidor Fecha competición.
-     * @return date Devuelve la fecha convertida para insertarla.
+     * @return string Devuelve la fecha convertida para insertarla.
      */
-    private function formatDate($competidor){  					
+    private function formatDate($competidor) : string
+    {  					
         $arrayF = explode("/", $competidor);
         $formatDate = $arrayF[1].'/'.$arrayF[0].'/'.$arrayF[2];
         $date = date("Y-m-d", strtotime($formatDate));
@@ -205,15 +234,37 @@ class Consultas {
 
     /**
      * Convierte el tiempo que es de tipo string a tipo date en formato time aceptado por la base de datos.
+     * 
      * @param string $competidor Tiempo.
-     * @return date Devuelve el tiempo convertido para insertarlo.
+     * @return string|null Devuelve el tiempo convertido para insertarlo.
      */
-    private function formatTime($competidor){
+    private function formatTime($competidor)
+    {
         $tiempo = str_replace ('=' , '' , str_replace ('"' , '' , $competidor));
         $time = null;
         if($tiempo != "")
             $time = date('H:i:s', strtotime($tiempo));         
         return $time;
+    }
+
+    /**
+     * Elimina todos los competidores de la tabla
+     *
+     * @return void
+     */
+    public function deleteAll(){
+        $stmt = $this->pdo->prepare('DELETE FROM competidores');
+        $stmt->execute();
+    }
+
+    /**
+     * Cierra la conexión para que no sobre carge la BD
+     *
+     * @return void
+     */
+    public function closeConnection() : void
+    {
+        $this->pdo = null;
     }
 }
     //$consulta = new Consultas();
