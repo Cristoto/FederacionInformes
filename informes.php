@@ -102,7 +102,6 @@
 										echo "<option value=\"" . $temporada["fechaCompeticion"] . "\">" . $temporada["fechaCompeticion"] . "</option>";
 									}
 								?>
-									
 								</select>
 							</div>
 							<span class="focus-input3"></span>
