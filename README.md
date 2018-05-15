@@ -54,9 +54,7 @@ Se utiliza Composer para satisfacer las librerías requeridas, no hay que realiz
 
 # Documentación sobre la API
 
-En el siguiente enlace encontrará documentación relacionada con la API (métodos, propiedades, herencia, etc).
-
-https://cristoto.github.io/FederacionInformes
+[Aquí](https://cristoto.github.io/FederacionInformes) encontrará documentación relacionada con la API (métodos, propiedades, herencia, etc).
 
 # Problemas
 
