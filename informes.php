@@ -97,9 +97,10 @@
 								<select class="selection-2" name="temporada">
 								<?php
 									$smb = new Consultas(); 
-									$temporadas = $smb -> getTemporadas();
+									$temporadas = $smb -> getTemporadas();									
 									foreach ($temporadas as $temporada) {
-										echo "<option value=\"" . $temporada["fechaCompeticion"] . "\">" . $temporada["fechaCompeticion"] . "</option>";
+										$year = date('Y', strtotime($temporada["fechaCompeticion"]));
+										echo "<option value=\"" . $temporada["fechaCompeticion"] . "\">" . $year . "</option>";
 									}
 								?>
 								</select>
