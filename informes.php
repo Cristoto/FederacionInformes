@@ -12,9 +12,10 @@
 		//Mime types for validations
 		$mimes = array('application/vnd.ms-excel','text/plain','text/csv','text/tsv');
 
-		$excel = new Excel($_FILES['files'], "files");
+		$excel = new Excel($_FILES['files']);
 		$excel->uploadFile($mimes, $_SERVER);
 		$excel->loadDataIntoBD();
+		Excel::deleteFiles();
 
 		//$smb = new Consultas();
 		//var_dump($smb);

@@ -20,11 +20,10 @@ require_once __DIR__ . '/../vendor/autoload.php';
 class Excel
 {
     private $files;
-    private $directory;
+    const DIRECTORY = "files";
 
-    function __construct(array $files, string $pathDirectoryFiles){
-        $this->files = $files;
-        $this->directory = $pathDirectoryFiles; 
+    function __construct(array $files){
+        $this->files = $files; 
     }
 
     /**
@@ -35,13 +34,13 @@ class Excel
     */
     public function uploadFile(array $mimes, array $serverData) : void{
         
-        $this->createDirectory($this->directory);
+        $this->createDirectory(self::DIRECTORY);
 
         // Simple validation (max file size 2MB and only two allowed mime types)
         $validator = new SimpleValidator('2M', $mimes);
 
         // Simple path resolver, where uploads will be put
-        $pathresolver = new SimplePath($this->directory);
+        $pathresolver = new SimplePath(self::DIRECTORY);
         // The machine's filesystem
         $filesystem = new SimpleFile();
 
@@ -76,8 +75,8 @@ class Excel
      *
      * @return void
      */
-    public function deleteFiles() : void{
-        $files = glob($this->directory . '/*');
+    public static function deleteFiles() : void{
+        $files = glob(self::DIRECTORY . '/*');
             foreach($files as $file){
                 if(is_file($file))
                     unlink($file);
