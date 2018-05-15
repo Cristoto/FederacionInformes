@@ -46,11 +46,23 @@ composer install
 ```
 # Dependencias
 
-Se utiliza Composer para satisfacer las librerías requeridas, no hay que realizar ninguna configuración, a modo de información son las siguientes librerías:
+Se utiliza Composer para satisfacer las librerías requeridas para php, no hay que realizar ninguna configuración, a modo de información son las siguientes librerías:
 
 - phpoffice/phpspreadsheet: "1.1" (IMPORTANTE versión 1.1, con la 1.2 el código no funciona)
 - gargron/fileupload: "~1.4.0"
 - setasign/fpdf: "1.8.1"
+
+
+
+Para las dependencias de JavaScript y CSS se utiliza NPM y dichas dependencias son:
+
+- "animate.css": "^3.6.1",
+- "jquery": "^3.3.1"
+- "bootstrap": "^4.1.1",
+- "hamburgers": "^0.9.3",
+- "select2": "^4.0.6-rc.1",
+- "popper.js": "^1.14.3",
+- "font-awesome": "^4.7.0"
 
 # Documentación sobre la API
 
