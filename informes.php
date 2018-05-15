@@ -14,10 +14,7 @@
 
 		$excel = new Excel($_FILES['files'], "files");
 		$excel->uploadFile($mimes, $_SERVER);
-		
-		$nombreFichero = $_FILES['files']['name'];
-			
-		loadFileIntoBD('./files/'.$nombreFichero);
+		$excel->loadDataIntoBD();
 
 		//$smb = new Consultas();
 		//var_dump($smb);

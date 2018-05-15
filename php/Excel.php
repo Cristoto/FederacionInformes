@@ -6,6 +6,8 @@ use FileUpload\FileUpload;
 use FileUpload\Validator\Simple as SimpleValidator;
 use FileUpload\FileSystem\Simple as SimpleFile;
 use FileUpload\PathResolver\Simple as SimplePath;
+use FederacionInformes\php\Consultas;
+use \PhpOffice\PhpSpreadsheet\Reader\Csv;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
@@ -80,6 +82,69 @@ class Excel
                 if(is_file($file))
                     unlink($file);
             }
+    }
+
+    /**
+     * Load data file into db
+     *
+     * @return void
+     */
+    public function loadDataIntoBD() : void{
+        $consulta = new Consultas();
+        try{
+            $reader = new Csv();
+        
+            $reader->setInputEncoding('CP1252');
+            $reader->setDelimiter(';');
+            $reader->setEnclosure('');
+            $reader->setSheetIndex(0);
+            
+            $spreadsheet = $reader->load('./files/' . $this->files['name']);
+            
+            $worksheet = $spreadsheet->getActiveSheet();
+            
+            //Se debe hacer lectura anticipada, o hacerle un next al iterador
+            //Manera no encontrada
+            //Se salta el primero para que no lea las cabeceras de las columnas
+            
+            $cutradaParaSaltarPrimero = 0;
+            foreach ($worksheet->getRowIterator() as $row) {
+                if($cutradaParaSaltarPrimero == 0){
+                    $cutradaParaSaltarPrimero++;
+                    continue;
+                }
+
+                $cellIterator = $row->getCellIterator();
+                $cellIterator->setIterateOnlyExistingCells(FALSE);
+                
+                $arrayFila = array();
+                foreach ($cellIterator as $cell) {
+                    $arrayFila[] = $this->utf8Decode(trim($cell->getValue()));				
+                }
+                
+                if($arrayFila[0] != '') {
+                    $consulta->insertarCompetidor($arrayFila);
+                }
+                
+            }
+                    
+        }catch(\PhpOffice\PhpSpreadsheet\Reader\Exception $e){
+            die('Error loading file: ' . $e->getMessage());
+        }
+    }
+
+    /**
+    * Elimina los caracteres extraños y los caracteres binarios de una cadena de texto.
+    * @param string $string Cadena a "limpiar".
+    * @return string Devuelve la cadena que recibió (como parámetro) "limpia", es decir, sin caracteres raros.
+    */
+    private function utf8Decode($string) {
+        $string = str_replace("\n","[NEWLINE]",$string);
+        $string = htmlentities($string);
+        $string = preg_replace('/[^(\x20-\x7F)]*/','',$string);
+        $string = html_entity_decode($string);     
+        $string = str_replace("[NEWLINE]","\n",$string);
+        return $string;
     }
 }
 
