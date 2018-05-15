@@ -33,6 +33,7 @@ Para la implementación de dicho programa se utilizará:
 - Tu php-ini debe tener la siguiente directiva activada.
 
   > file_uploads = On
+  > extension=xsl
 
 # Instalación
 
