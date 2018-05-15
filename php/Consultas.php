@@ -93,7 +93,7 @@ class Consultas {
      */
     public function getTemporadas() : array
     {
-        $stmt = $this->pdo->prepare("SELECT DISTINCT competicion FROM competidores");
+        $stmt = $this->pdo->prepare("SELECT DISTINCT fechaCompeticion FROM competidores");
         $stmt->execute();
 
         return $stmt->fetchAll();  

@@ -17,8 +17,6 @@
 		$excel->loadDataIntoBD();
 		Excel::deleteFiles();
 
-		//$smb = new Consultas();
-		//var_dump($smb);
 	}
 ?>
 <!DOCTYPE html>
@@ -98,16 +96,15 @@
 							<div>
 								<select class="selection-2" name="temporada">
 								<?php
-									//TODO Use when solved problem with class Conexiones
-									/*$temporadas = $smb -> getTemporadas();
+									$smb = new Consultas(); 
+									$temporadas = $smb -> getTemporadas();
 									foreach ($temporadas as $temporada) {
-										echo "<option value=\"" . $temporada . "\">" . $temporada . "</option>";
-									}*/
+										foreach($temporada as $temp){
+											echo "<option value=\"" . $temp . "\">" . $temp . "</option>";
+										}
+									}
 								?>
-									<option value="noSeleccionado" disabled selected>Temporada</option>
-									<option value="1">1500 $</option>
-									<option value="2">2000 $</option>
-									<option value="3">3000 $</option>
+									
 								</select>
 							</div>
 							<span class="focus-input3"></span>
