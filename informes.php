@@ -131,8 +131,12 @@
 			$temporada = $_POST["temporada"];
 
 			$bd = new Consultas();
-			createPDF('Todos los competidores', [], $bd->getAllCompetidores());
-			
+			$p = $bd->informeCategoria('Absoluto');
+			var_dump($p);
+			//createPDF('Categoría absoluto', [], $p);
+			//createPDF('Todos los competidores', [], $bd->getAllCompetidores());
+			$bd->deleteAll();
+			$bd->closeConnection();
 		}
 	?>
 	
