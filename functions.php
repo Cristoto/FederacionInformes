@@ -21,11 +21,3 @@ function createPDF(string $title, array $header, array $content){
 		$pdf->Output();
 	ob_end_flush(); 
 }
-
-function puntos($bloqueo, $cantParticipantes, $puntInicial, $difPuntos, $temporada) {
-	$puntos = [];
-	array_push($puntos, $puntInicial);
-	for ($i = 1; $i < $cantParticipantes ; $i++) { 
-		array_push($puntos, $puntos[$i-1] + $difPuntos);
-	}
-}

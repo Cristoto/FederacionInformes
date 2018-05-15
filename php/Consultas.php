@@ -100,6 +100,19 @@ class Consultas {
     }
 
     /**
+     * Obtiene todas las competiciones que existen.
+     *
+     * @return array
+     */
+    public function getCompeticiones() : array
+    {
+        $stmt = $this->pdo->prepare("SELECT DISTINCT competicion FROM competidores");
+        $stmt->execute();
+
+        return $stmt->fetchAll();  
+    }
+
+    /**
      * Devuelve toda la información de los competidores.
      * 
      * @return array
@@ -174,6 +187,68 @@ class Consultas {
         return $data;
     }    
 
+    public function puntos($bloqueo, $cantParticipantes, $puntInicial, $difPuntos, $temporada) {
+        $puntos = [];
+        array_push($puntos, $puntInicial);
+        for ($i = 1; $i < $cantParticipantes ; $i++) { 
+            array_push($puntos, $puntos[$i-1] + $difPuntos);
+        }
+        
+        $generos = $this->getGeneros();
+        $pruebas = $this->getPruebas();
+        $categorias = $this->getCategoria();
+        $competiciones  = $this->getCompeticiones();
+        $x = [];
+
+        foreach ($competiciones as $competicion) {
+            foreach ($categorias as $categoria) {
+                foreach ($pruebas as $prueba) {
+                    foreach ($generos as $genero) {
+                        $compeditores = $this->getPosiciones($prueba['prueba'], $genero['sexo'], $categoria['categoria'], $competicion['competicion']);
+                        if(sizeof($compeditores) != 0) {
+                            $x[] = array(
+                                'competicion' => $competicion['competicion'],
+                                'categoria' => $categoria['categoria'],
+                                'prueba' => $prueba['prueba'],
+                                'genero' => $genero['sexo'],
+                                'competidores' => $compeditores
+                            );
+                        }
+                    }
+                }
+            }
+        }
+        return $x;
+    }
+
+    public function getPosiciones($prueba, $sexo, $categoria, $competicion) {
+        $stmt = $this->pdo->prepare('SELECT nombre, apellidos, anio, club, tiempo, tiempoConvertido, posicion, exclusion, descalificado FROM competidores WHERE prueba = :prueba AND sexo = :sexo AND categoria = :categoria AND competicion = :competicion ORDER BY posicion ASC');
+        $stmt->bindParam(':prueba', $prueba, PDO::PARAM_STR, 60);
+        $stmt->bindParam(':sexo', $sexo, PDO::PARAM_STR, 1);
+        $stmt->bindParam(':categoria', $categoria, PDO::PARAM_STR, 20);
+        $stmt->bindParam(':competicion', $competicion, PDO::PARAM_STR, 60);
+        $stmt->execute();
+        
+        $row = $stmt->fetchAll();
+        $competidores = [];
+        foreach($row as $fil) {
+            $competidor = [
+                'nombre' => $fil['nombre'], 
+                'apellidos' => $fil['apellidos'], 
+                'anio' => $fil['anio'], 
+                'club' => $fil['club'],
+                'tiempo' => $fil['tiempo'],
+                'tiempoConvertido' => $fil['tiempoConvertido'],
+                'posicion' => $fil['posicion'],
+                'exclusion' => $fil['exclusion'],
+                'descalificado' => $fil['descalificado']
+            ];
+            array_push($competidores, $competidor);
+        }
+        
+        return $competidores;      
+    }
+
     /**
      * Realiza la inserción de los competidores a través de un array con sus datos que recibe como parámetro.
      * 
@@ -186,10 +261,12 @@ class Consultas {
         
         //Elimina algunos caracteres que recibe de forma errónea.
         $tiempo = str_replace ('=' , '' , str_replace ('"' , '' , $competidor[16]));
+        $timeConvert = str_replace ('=' , '' , str_replace ('"' , '' , $competidor[17]));
         //En caso de que no tenga tiempo ese competidor se coloca el campo a null.
         if($tiempo == "")
             $tiempo = null;
-        $timeConvert = $this->formatTime($competidor[17]);   
+        if($timeConvert == "")
+            $timeConvert = null;
     
         $stmt = $this->pdo->prepare(
             "INSERT INTO competidores (nombre, apellidos, anio, sexo, club, clubComunidad, competicion, fechaCompeticion, lugarCompeticion, comunidadCompeticion, tipoPiscina, prueba, agrupacion, categoria, tipoSerioe, ronda, tiempo, tiempoConvertido, posicion, exclusion, descalificado) 
@@ -211,7 +288,7 @@ class Consultas {
         $stmt->bindParam(':tipoSerioe', $competidor[14], PDO::PARAM_STR, 30);
         $stmt->bindParam(':ronda', $competidor[15], PDO::PARAM_INT);
         $stmt->bindParam(':tiempo', $tiempo, PDO::PARAM_STR, 8);
-        $stmt->bindParam(':tiempoConvertido', $timeConvert);
+        $stmt->bindParam(':tiempoConvertido', $timeConvert, PDO::PARAM_STR, 8);
         $stmt->bindParam(':posicion', $competidor[18], PDO::PARAM_INT);
         $stmt->bindParam(':exclusion', $competidor[19], PDO::PARAM_STR, 20);
         $stmt->bindParam(':descalificado', $competidor[20], PDO::PARAM_STR, 2);
@@ -230,21 +307,6 @@ class Consultas {
         $formatDate = $arrayF[1].'/'.$arrayF[0].'/'.$arrayF[2];
         $date = date("Y-m-d", strtotime($formatDate));
         return $date;
-    }
-
-    /**
-     * Convierte el tiempo que es de tipo string a tipo date en formato time aceptado por la base de datos.
-     * 
-     * @param string $competidor Tiempo.
-     * @return string|null Devuelve el tiempo convertido para insertarlo.
-     */
-    private function formatTime($competidor)
-    {
-        $tiempo = str_replace ('=' , '' , str_replace ('"' , '' , $competidor));
-        $time = null;
-        if($tiempo != "")
-            $time = date('H:i:s', strtotime($tiempo));         
-        return $time;
     }
 
     /**
@@ -269,6 +331,8 @@ class Consultas {
 }
     //$consulta = new Consultas();
     //header('Content-Type: application/json');
+	//echo json_encode($consulta->puntos('', 20, 2, 2, ''));
     //echo json_encode($consulta->informeCategoria('Infantil'));
     //echo json_encode($consulta->getCompetidoresCategoria('Infantil', 'F', '100 m. natación con obstáculos'));
+    //var_dump($consulta->getPosiciones('100 m. natación con obstáculos', 'F', 'Infantil', '5º Jornada Liga - CANARIAS'));
 ?>
