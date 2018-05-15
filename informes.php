@@ -99,9 +99,7 @@
 									$smb = new Consultas(); 
 									$temporadas = $smb -> getTemporadas();
 									foreach ($temporadas as $temporada) {
-										foreach($temporada as $temp){
-											echo "<option value=\"" . $temp . "\">" . $temp . "</option>";
-										}
+										echo "<option value=\"" . $temporada["fechaCompeticion"] . "\">" . $temporada["fechaCompeticion"] . "</option>";
 									}
 								?>
 									
