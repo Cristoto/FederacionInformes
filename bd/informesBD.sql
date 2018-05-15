@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS competidores(
     tipoSerioe VARCHAR(30),
     ronda TINYINT,
     tiempo VARCHAR(8),
-    tiempoConvertido TIME,
+    tiempoConvertido VARCHAR(8),
     posicion TINYINT,
     exclusion VARCHAR(20),
     descalificado CHAR(2),
