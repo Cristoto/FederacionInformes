@@ -76,7 +76,7 @@ class Excel
      *
      * @return void
      */
-    public function deleteFiles(){
+    public function deleteFiles() : void{
         $files = glob($this->directory . '/*');
             foreach($files as $file){
                 if(is_file($file))
@@ -138,7 +138,8 @@ class Excel
     * @param string $string Cadena a "limpiar".
     * @return string Devuelve la cadena que recibió (como parámetro) "limpia", es decir, sin caracteres raros.
     */
-    private function utf8Decode($string) {
+    private function utf8Decode(string $string) : string
+    {
         $string = str_replace("\n","[NEWLINE]",$string);
         $string = htmlentities($string);
         $string = preg_replace('/[^(\x20-\x7F)]*/','',$string);
