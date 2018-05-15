@@ -52,6 +52,12 @@ Se utiliza Composer para satisfacer las librerías requeridas, no hay que realiz
 - gargron/fileupload: "~1.4.0"
 - setasign/fpdf: "1.8.1"
 
+# Documentación sobre la API
+
+En el siguiente enlace encontrará documentación relacionada con la API.
+
+https://cristoto.github.io/FederacionInformes
+
 # Problemas
 
 A continuación se menciona algunos problemas conocidos a la hora de la ejecución del programa y su correspondiente solución:
