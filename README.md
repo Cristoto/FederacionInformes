@@ -32,7 +32,7 @@ Para la implementación de dicho programa se utilizará:
 - Asegurar que la extensión "fileinfo" está habilitada en el php.ini.
 - Tu php-ini debe tener la siguiente directiva activada.
 
-  > file_uploads = On
+  > file_uploads = On  
   > extension=xsl
 
 # Instalación
@@ -56,12 +56,12 @@ Se utiliza Composer para satisfacer las librerías requeridas para php, no hay q
 
 Para las dependencias de JavaScript y CSS se utiliza NPM y dichas dependencias son:
 
-- "animate.css": "^3.6.1",
+- "animate.css": "^3.6.1"
 - "jquery": "^3.3.1"
-- "bootstrap": "^4.1.1",
-- "hamburgers": "^0.9.3",
-- "select2": "^4.0.6-rc.1",
-- "popper.js": "^1.14.3",
+- "bootstrap": "^4.1.1"
+- "hamburgers": "^0.9.3"
+- "select2": "^4.0.6-rc.1"
+- "popper.js": "^1.14.3"
 - "font-awesome": "^4.7.0"
 
 # Documentación sobre la API
