@@ -13,6 +13,11 @@ use PDO;
 class Consultas {
 
     /**
+     * Name of file with the configuration to connect with the database
+     */
+    const FILE_NAME = 'configserver.json';
+
+    /**
      * Objeto para realizar consultas a la bd
      *
      * @var PDO
@@ -33,18 +38,31 @@ class Consultas {
      */
     private function conectar() : void
     {
-        $host = 'localhost';
-        $dbname = 'db_competiciones';
-        $user = 'root';
-        $pass = '';
-
+        $fileContent = $this->getConfiguration();
         try {
-            $this->pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $user, $pass);
+            if(\gettype($fileContent) === 'object') {
+                $this->pdo = new PDO("mysql:host=" . $fileContent->host . ";dbname=" . $fileContent->dbname . 
+                                     ";charset=utf8", $fileContent->user, $fileContent->password);
+            } else {
+                $this->pdo = new PDO("mysql:host=" . $fileContent['host'] . ";dbname=" . $fileContent["dbname"] . 
+                                     ";charset=utf8", $fileContent["user"], $fileContent["password"]);
+            }
             $this->pdo->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
         }
         catch(PDOException $e) {
             echo $e->getMessage();
         }
+    }
+
+    /**
+     * Recoge la información del fichero JSON
+     * 
+     * @return object
+     */
+    private function getConfiguration() : object
+    {
+        $contentString = file_get_contents(__DIR__ . '/..\/' . self::FILE_NAME);
+        return json_decode($contentString);
     }
     
     /**
