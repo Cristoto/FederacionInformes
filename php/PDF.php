@@ -57,6 +57,13 @@ class PDF extends FPDF
         $this->Cell(0,10,'Página '.$this->PageNo().'/{nb}',0,0,'C');
     }
 
+    /**
+     * Write content into pdf file
+     *
+     * @param array $header
+     * @param array $data
+     * @return void
+     */
     public function loadTable(array $header, array $data){
         $widthCells = 40;
         // Colors, line width and bold font
