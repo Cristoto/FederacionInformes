@@ -1,0 +1,6 @@
+{
+    "host": "localhost",
+    "dbname": "db_competiciones",
+    "user": "root",
+    "password": ""
+}
