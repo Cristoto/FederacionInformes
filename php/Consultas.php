@@ -416,10 +416,10 @@ class Consultas {
         $this->pdo = null;
     }
 }
-    $consulta = new Consultas();
-    header('Content-Type: application/json');
+    //$consulta = new Consultas();
+    //header('Content-Type: application/json');
 	//echo json_encode($consulta->puntos('', 20, 2, 2, ''));
-    echo json_encode($consulta->informeCategoria('Infantil'));
+    //echo json_encode($consulta->informeCategoria('Infantil'));
     //echo json_encode($consulta->getCompetidoresCategoria('Infantil', 'F', '100 m. natación con obstáculos'));
     //var_dump($consulta->getPosiciones('100 m. natación con obstáculos', 'F', 'Infantil', '5º Jornada Liga - CANARIAS'));
 ?>
