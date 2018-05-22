@@ -28,7 +28,77 @@ class Consultas {
      * Constructor encargado de montar la base de la conexión
      */
     function __construct(){
+        $this->crearDB();
+        $this->crearTablas();
         $this->conectar();
+    }
+
+    /**
+     * Creación de la tabla encargada de gestionar los competidores
+     *
+     * @return void
+     */
+    private function crearTablas() : void 
+    {
+        $fileContent = $this->getConfiguration();
+        try {
+            if(\gettype($fileContent) === 'object') {
+                $this->pdo = new PDO("mysql:host=" . $fileContent->host . ";dbname=" . $fileContent->dbname, $fileContent->user, $fileContent->password);
+            } else {
+                $this->pdo = new PDO("mysql:host=" . $fileContent['host'] . ";dbname=" . $fileContent["dbname"], $fileContent["user"], $fileContent["password"]);
+            }
+
+            $this->pdo->exec('CREATE TABLE IF NOT EXISTS competidores(
+                id INT AUTO_INCREMENT NOT NULL,
+                nombre VARCHAR(20),
+                apellidos VARCHAR(50),
+                anio SMALLINT,
+                sexo CHAR(1),
+                club VARCHAR(60),
+                clubComunidad VARCHAR(60),
+                competicion VARCHAR(60),
+                fechaCompeticion DATE,
+                lugarCompeticion VARCHAR(60),
+                comunidadCompeticion VARCHAR(60),
+                tipoPiscina CHAR(3),
+                prueba VARCHAR(60),
+                agrupacion VARCHAR(100),
+                categoria VARCHAR(20),
+                tipoSerioe VARCHAR(30),
+                ronda TINYINT,
+                tiempo VARCHAR(8),
+                tiempoConvertido VARCHAR(8),
+                posicion TINYINT,
+                exclusion VARCHAR(20),
+                descalificado CHAR(2),
+                CONSTRAINT pk_competidores PRIMARY KEY (id)
+            )ENGINE = InnoDb;');
+        }
+        catch(PDOException $e) {
+            echo $e->getMessage();
+        }
+    }
+
+    /**
+     * Creación de la base de datos
+     *
+     * @return void
+     */
+    private function crearDB() : void 
+    {
+        $fileContent = $this->getConfiguration();
+        try {
+            if(\gettype($fileContent) === 'object') {
+                $this->pdo = new PDO("mysql:host=" . $fileContent->host, $fileContent->user, $fileContent->password);
+            } else {
+                $this->pdo = new PDO("mysql:host=" . $fileContent['host'], $fileContent["user"], $fileContent["password"]);
+            }
+            
+            $this->pdo->exec('CREATE DATABASE IF NOT EXISTS db_competiciones CHARACTER SET utf8 COLLATE utf8_general_ci;');
+        }
+        catch(PDOException $e) {
+            echo $e->getMessage();
+        }
     }
 
     /**
