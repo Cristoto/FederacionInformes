@@ -109,7 +109,7 @@ class PDF extends FPDF
             $pdf->AddPage('L');
             $pdf->SetFont('Times','',12);
             $pdf->loadTable($header, $content);
-            $pdf->Output();
+            $pdf->Output('D', $title . '.pdf', true);
         ob_end_flush(); 
     }
 }

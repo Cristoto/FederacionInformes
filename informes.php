@@ -6,7 +6,6 @@
 	use FederacionInformes\php\PDF;
 	
 	require_once __DIR__ . '/vendor/autoload.php';
-	require_once 'functions.php';
 	
 	if (isset($_POST['subidaFile'])){
 		//Mime types for validations
