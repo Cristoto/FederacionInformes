@@ -6,7 +6,6 @@
 	use FederacionInformes\php\PDF;
 	
 	require_once __DIR__ . '/vendor/autoload.php';
-	require_once 'functions.php';
 	
 	if (isset($_POST['subidaFile'])){
 		//Mime types for validations
@@ -124,11 +123,10 @@
 			$difPuntos = $_POST["difPuntos"];
 			$temporada = $_POST["temporada"];
 
-			$p = $smb->informeCategoria('Absoluto');
-			var_dump($smb->puntos($usaBloqueo, $cantParticipantes, $puntInicial, $difPuntos, $temporada));
+			//$p = $smb->informeCategoria('Absoluto');
 
 			//createPDF('Categoría absoluto', [], $p);
-			//createPDF('Todos los competidores', [], $smb->getAllCompetidores());
+			PDF::createPDF('Todos los competidores', [], $smb->getAllCompetidores());
 			$smb->deleteAll();
 			$smb->closeConnection();
 		}
@@ -147,14 +145,14 @@
 	<script src="Assets/js/main.js"></script>
 
 	<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-23581568-13"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-23581568-13"></script>
+	<script>
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
 
-  gtag('config', 'UA-23581568-13');
-</script>
+	gtag('config', 'UA-23581568-13');
+	</script>
 
 </body>
 </html>

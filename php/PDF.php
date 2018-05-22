@@ -57,6 +57,13 @@ class PDF extends FPDF
         $this->Cell(0,10,'Página '.$this->PageNo().'/{nb}',0,0,'C');
     }
 
+    /**
+     * Write content into pdf file
+     *
+     * @param array $header
+     * @param array $data
+     * @return void
+     */
     public function loadTable(array $header, array $data){
         $widthCells = 40;
         // Colors, line width and bold font
@@ -85,5 +92,24 @@ class PDF extends FPDF
         }
         // Closing line
         $this->Cell($widthCells*count($header),0,'','T');
+    }
+
+    /**
+     * Create a PDF with specify content
+     *
+     * @param string $title Title to the PDF
+     * @param array $header Content to the header of the table
+     * @param array $content array with the content of the table
+     * @return void
+     */
+    public static function createPDF(string $title, array $header, array $content){
+        ob_start();
+            $pdf = new PDF($title);
+            $pdf->AliasNbPages();
+            $pdf->AddPage('L');
+            $pdf->SetFont('Times','',12);
+            $pdf->loadTable($header, $content);
+            $pdf->Output('D', $title . '.pdf', true);
+        ob_end_flush(); 
     }
 }
