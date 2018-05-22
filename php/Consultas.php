@@ -256,23 +256,21 @@ class Consultas {
         $generos = $this->getGeneros();
         $pruebas = $this->getPruebas();
         
-        $data = array(
-            'categoria' => $categoria,
-            'data' => []
-        );
+        $informe = [];
 
         foreach ($pruebas as $prueba) {
-            $pru = array(
-                'prueba' => $prueba['prueba'],
-                'genero' => array()
-            );    
             foreach ($generos as $genero) {
-                array_push($pru['genero'], $this->getCompetidoresCategoria($categoria, $genero['sexo'], $prueba['prueba']));
-            }
-            array_push($data['data'], $pru);
+                $data = (object) array(
+                    'categoria' => $categoria,
+                    'prueba' => $prueba['prueba'],
+                    'sexo' => $genero['sexo'],
+                    'competidores' => $this->getCompetidoresCategoria($categoria, $genero['sexo'], $prueba['prueba'])
+                );
+                $informe[] = $data;
+            }            
         }
 
-        return $data;
+        return $informe;
     }    
 
     public function puntos($bloqueo, $cantParticipantes, $puntInicial, $difPuntos, $temporada) {
@@ -309,7 +307,8 @@ class Consultas {
         return $x;
     }
 
-    public function getPosiciones($prueba, $sexo, $categoria, $competicion) {
+    public function getPosiciones($prueba, $sexo, $categoria, $competicion) : array
+    {
         $stmt = $this->pdo->prepare('SELECT nombre, apellidos, anio, club, tiempo, tiempoConvertido, posicion, exclusion, descalificado FROM competidores WHERE prueba = :prueba AND sexo = :sexo AND categoria = :categoria AND competicion = :competicion ORDER BY posicion ASC');
         $stmt->bindParam(':prueba', $prueba, PDO::PARAM_STR, 60);
         $stmt->bindParam(':sexo', $sexo, PDO::PARAM_STR, 1);
@@ -417,10 +416,10 @@ class Consultas {
         $this->pdo = null;
     }
 }
-    //$consulta = new Consultas();
-    //header('Content-Type: application/json');
+    $consulta = new Consultas();
+    header('Content-Type: application/json');
 	//echo json_encode($consulta->puntos('', 20, 2, 2, ''));
-    //echo json_encode($consulta->informeCategoria('Infantil'));
+    echo json_encode($consulta->informeCategoria('Infantil'));
     //echo json_encode($consulta->getCompetidoresCategoria('Infantil', 'F', '100 m. natación con obstáculos'));
     //var_dump($consulta->getPosiciones('100 m. natación con obstáculos', 'F', 'Infantil', '5º Jornada Liga - CANARIAS'));
 ?>
