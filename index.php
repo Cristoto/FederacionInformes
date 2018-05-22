@@ -23,9 +23,7 @@
         <div class="body" id="drop">
           <i class="fa fa-file-excel-o pointer-none" aria-hidden="true"></i>
           <p class="pointer-none">
-            <b>Arrastre y suelte </b> fichero aquí
-            <br /> o
-            <a href="" id="triggerFile">inspeccionar</a> para subir el archivo</p>
+            <a href="" id="triggerFile">Inspeccionar</a> para subir el archivo</p>
           <input type="file" multiple="multiple" name="files" accept=".csv"/>
         </div>
         <footer>
