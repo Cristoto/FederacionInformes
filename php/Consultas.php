@@ -290,7 +290,7 @@ class Consultas {
             foreach ($categorias as $categoria) {
                 foreach ($pruebas as $prueba) {
                     foreach ($generos as $genero) {
-                        $compeditores = $this->getPosiciones($prueba['prueba'], $genero['sexo'], $categoria['categoria'], $competicion['competicion']);
+                        $compeditores = $this->getPosiciones($prueba['prueba'], $genero['sexo'], $categoria['categoria'], $competicion['competicion'], $cantParticipantes, $puntInicial, $difPuntos, $bloqueo);
                         if(sizeof($compeditores) != 0) {
                             $x[] = array(
                                 'competicion' => $competicion['competicion'],
@@ -307,7 +307,7 @@ class Consultas {
         return $x;
     }
 
-    public function getPosiciones($prueba, $sexo, $categoria, $competicion) : array
+    public function getPosiciones($prueba, $sexo, $categoria, $competicion, $cantParticipantes, $puntInicial, $difPuntos, $bloqueo) : array
     {
         $stmt = $this->pdo->prepare('SELECT nombre, apellidos, anio, club, tiempo, tiempoConvertido, posicion, exclusion, descalificado FROM competidores WHERE prueba = :prueba AND sexo = :sexo AND categoria = :categoria AND competicion = :competicion ORDER BY posicion ASC');
         $stmt->bindParam(':prueba', $prueba, PDO::PARAM_STR, 60);
@@ -318,19 +318,57 @@ class Consultas {
         
         $row = $stmt->fetchAll();
         $competidores = [];
+        $puntuados = 0;     
+        $puntos = $puntInicial;
+
         foreach($row as $fil) {
+            $descalificado = $fil['descalificado'];
+            $club = $fil['club'];   
+            
+            $puntuadosClub = 1;
+            foreach ($competidores as $value) {
+                if($club == $value['club']){
+                    $puntuadosClub++;
+                }
+            }     
+
+            if($puntuados != 0) {
+                if($puntuados < $cantParticipantes && $descalificado == 'No') {
+                    if($puntuadosClub <= 3) {                             
+                        $puntInicial = $puntInicial - $difPuntos;
+                        $puntos = $puntInicial;
+                    }
+                    else {                        
+                        if($bloqueo == 'S') {  
+                            $puntInicial = $puntInicial - $difPuntos;
+                        }
+                        $puntos = 0;
+                        $puntuados--;
+                    }
+                }
+                else {
+                    $puntos = 0;
+                }
+            } 
+            else {
+                if($descalificado != 'No')
+                    $puntos = 0;
+            }
+
             $competidor = [
                 'nombre' => $fil['nombre'], 
                 'apellidos' => $fil['apellidos'], 
                 'anio' => $fil['anio'], 
-                'club' => $fil['club'],
+                'club' => $club,
                 'tiempo' => $fil['tiempo'],
                 'tiempoConvertido' => $fil['tiempoConvertido'],
                 'posicion' => $fil['posicion'],
                 'exclusion' => $fil['exclusion'],
-                'descalificado' => $fil['descalificado']
+                'descalificado' => $descalificado,
+                'puntos' => $puntos
             ];
-            array_push($competidores, $competidor);
+            array_push($competidores, $competidor);            
+            $puntuados++;
         }
         
         return $competidores;      
@@ -418,8 +456,8 @@ class Consultas {
 }
     //$consulta = new Consultas();
     //header('Content-Type: application/json');
-	//echo json_encode($consulta->puntos('', 20, 2, 2, ''));
+	//echo json_encode($consulta->puntos('', 5, 40, 4, ''));
     //echo json_encode($consulta->informeCategoria('Infantil'));
     //echo json_encode($consulta->getCompetidoresCategoria('Infantil', 'F', '100 m. natación con obstáculos'));
-    //var_dump($consulta->getPosiciones('100 m. natación con obstáculos', 'F', 'Infantil', '5º Jornada Liga - CANARIAS'));
+    //var_dump($consulta->getPosiciones('50 m. remolque de maniquí', 'M', 'Absoluto', '5º Jornada Liga - CANARIAS', 7, 20, 2, 'N'));
 ?>
