@@ -379,6 +379,15 @@ class Consultas {
         return $informe;
     }   
 
+    public function informesCategorias(){
+        $categorias = $this->getCategoria();
+        $informeCategorias = [];
+        foreach ($categorias as $categoria) {
+            $informeCategorias[] = $this->informeCategoria($categoria['categoria']);
+        }
+        return $informeCategorias;
+    }
+
     /**
      * Obtiene todos los competidores correspondientes a los parámetros indicados.
      * 
@@ -500,10 +509,11 @@ class Consultas {
     }
 }
     $consulta = new Consultas();
-    header('Content-Type: application/json');
+    //header('Content-Type: application/json');
     //echo json_encode($consulta->asignarPuntos('', 5, 40, 4, ''));
     //var_dump($consulta->asignarPuntos('', 5, 40, 4, ''));
-    echo json_encode($consulta->informeCategoria('Infantil'));
+    //echo json_encode($consulta->informeCategoria('Infantil'));
     //echo json_encode($consulta->getCompetidoresCategoria('Infantil', 'F', '50 m. remolque de maniquí pequeño'));
     //var_dump($consulta->getPosiciones('50 m. remolque de maniquí', 'M', 'Absoluto', '5º Jornada Liga - CANARIAS', 7, 20, 2, 'N'));
+    var_dump($consulta->informesCategorias());
 ?>
