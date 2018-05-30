@@ -124,6 +124,7 @@
 			$temporada = $_POST["temporada"];
 
 			//$p = $smb->informeCategoria('Absoluto');
+			//var_dump($smb->asignarPuntos($usaBloqueo, $cantParticipantes, $puntInicial, $difPuntos, $temporada));
 
 			//createPDF('Categoría absoluto', [], $p);
 			PDF::createPDF('Todos los competidores', [], $smb->getAllCompetidores());
