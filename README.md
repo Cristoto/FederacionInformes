@@ -30,7 +30,7 @@ Para la implementación de dicho programa se utilizará:
 - PHP 5 o superior.
 - Composer.
 - Asegurar que la extensión "fileinfo" está habilitada en el php.ini.
-- Tu php-ini debe tener la siguiente directiva activada.
+- Tu php-ini debe tener las siguientes directivas activadas.
 
   > file_uploads = On  
   > extension=xsl
