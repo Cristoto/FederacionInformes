@@ -106,24 +106,6 @@
 							<span class="focus-input3"></span>
 						</div>
 
-						<div class="wrap-input3 input3-select" style="display:block" required>
-							<div>
-								<select onChange="seleccionOpciones.call(this, event)" class="selection-2" name="seleccionPDF">
-								<option value="0">Categoria</option>
-								<option value="1">Clubes</option>
-								</select>
-							</div>
-							<span class="focus-input3"></span>
-						</div>
-
-						<div id="0" class="opcionesPDF">
-						holaaaa
-						</div>
-						
-						<div id="1" class="opcionesPDF">
-						adiooooos
-						</div>
-
 						<div class="container-contact3-form-btn">
 							<input name="generar" type="submit" class="contact3-form-btn" value="Generar"/>
 						</div>
@@ -141,14 +123,13 @@
 			$puntInicial = $_POST["puntInicial"];
 			$difPuntos = $_POST["difPuntos"];
 			$temporada = $_POST["temporada"];
-			$seleccionPDF = $_POST["seleccionPDF"];
 
 			//$p = $smb->informeCategoria('Absoluto');
-
+			$smb->asignarPuntos($usaBloqueo, $cantParticipantes, $puntInicial, $difPuntos, $temporada);
 			//createPDF('Categoría absoluto', [], $p);
-
 			
-			PDF::createPDF('Todos los competidores', [], $smb->getCompetidoresCategoria('Infantil','M','100 m. natación con obstáculos'));
+			PDF::createPDF('Informe Categoria Infantil', [], $smb->informeCategoria('Infantil'));
+			//PDF::createPDF('Todos los competidores', [], $smb->getAllCompetidores());
 			$smb->deleteAll();
 			$smb->closeConnection();
 		}
@@ -165,42 +146,6 @@
 		});
 	</script>
 	<script src="Assets/js/main.js"></script>
-	
-	<script>
-
-		function seleccionOpciones(event) {
-			
-			ocultarOpciones();
-			mostrarOpcion(this.value);
-			
-		}
-		
-		function ocultarOpcionesInicio(val){
-
-			ocultarOpciones();
-			mostrarOpcion(val);
-
-		}
-
-		function mostrarOpcion(val){
-
-			var elementoMostrar = document.getElementById(val);
-			elementoMostrar.style.display = "block";
-
-		}
-
-		function ocultarOpciones(){
-
-			var elementoEsconder = document.getElementsByClassName("opcionesPDF");
-			var tam = elementoEsconder.length;
-
-			var i;
-			for(i = 0; i < tam; i++){
-				elementoEsconder[i].style.display = "none";
-			}
-
-		}
-	</script>
 
 	<!-- Global site tag (gtag.js) - Google Analytics -->
 	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-23581568-13"></script>
