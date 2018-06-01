@@ -344,8 +344,7 @@ class Consultas {
             $stmt->bindParam(15, $compeditor['tipoPiscina']);
             $stmt->bindParam(16, $compeditor['puntos']); 
             $stmt->execute();      
-        }
-        
+        }        
     }
     
     /**
@@ -379,7 +378,8 @@ class Consultas {
         return $informe;
     }   
 
-    public function informesCategorias(){
+    public function informesCategorias()
+    {
         $categorias = $this->getCategoria();
         $informeCategorias = [];
         foreach ($categorias as $categoria) {
@@ -423,6 +423,50 @@ class Consultas {
         }
         
         return $competidores;
+    }
+
+    public function informeCategoriaClub(string $categoria)
+    {
+        $generos = $this->getGeneros();
+        $pruebas = $this->getPruebas();
+
+        $competidores = [];
+        foreach ($pruebas as $prueba) {
+            foreach ($generos as $genero) {
+                $stmt = $this->pdo->prepare("SELECT club, tipoPiscina, tiempoConvertido, puntos, exclusion, descalificado FROM competidores_puntos WHERE categoria = ? AND sexo = ? AND prueba = ? GROUP BY club ORDER BY puntos DESC");
+                $stmt->bindParam(1, $categoria);
+                $stmt->bindParam(2, $genero['sexo']);
+                $stmt->bindParam(3, $prueba['prueba']);
+                $stmt->execute();
+
+                $row = $stmt->fetchAll();
+                foreach($row as $fil) {
+                    $competidor = [
+                        'categoria' => $categoria,
+                        'prueba' => $prueba['prueba'],
+                        'sexo' => $genero['sexo'],
+                        'club' => $fil['club'], 
+                        'tipoPiscina' => $fil['tipoPiscina'],
+                        'tiempoConvertido' => $fil['tiempoConvertido'],
+                        'puntos' => $fil['puntos'],
+                        'exclusion' => $fil['exclusion'],
+                        'descalificado' => $fil['descalificado']
+                    ];
+                    array_push($competidores, $competidor);
+                }
+            }
+        }
+        return $competidores;
+    }
+
+    public function informesCategoriasClub() 
+    {
+        $categorias = $this->getCategoria();
+        $informeCategoriaClub = [];
+        foreach ($categorias as $categoria) {
+            $informeCategoriaClub[] = $this->informeCategoriaClub($categoria['categoria']);
+        }
+        return $informeCategoriaClub;
     }
 
     /**
@@ -513,6 +557,8 @@ class Consultas {
     //echo json_encode($consulta->asignarPuntos('', 5, 40, 4, ''));
     //var_dump($consulta->asignarPuntos('', 5, 40, 4, ''));
     //echo json_encode($consulta->informeCategoria('Infantil'));
+    //echo json_encode($consulta->informeCategoriaClub('Infantil'));
+    //var_dump($consulta->informeCategoriaClub('Infantil'));
     //echo json_encode($consulta->getCompetidoresCategoria('Infantil', 'F', '50 m. remolque de maniquí pequeño'));
     //var_dump($consulta->getPosiciones('50 m. remolque de maniquí', 'M', 'Absoluto', '5º Jornada Liga - CANARIAS', 7, 20, 2, 'N'));
     //var_dump($consulta->informesCategorias());

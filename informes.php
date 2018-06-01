@@ -128,8 +128,11 @@
 			$smb->asignarPuntos($usaBloqueo, $cantParticipantes, $puntInicial, $difPuntos, $temporada);
 			//createPDF('Categoría absoluto', [], $p);
 			
-			PDF::createPDF('Informe Categoria Infantil', [], $smb->informeCategoria('Infantil'));
-			//PDF::createPDF('Todos los competidores', [], $smb->getAllCompetidores());
+			//PDF::createPDF('Todos los competidores', [], $smb->getAllCompetidores());			
+			//PDF::createPDF('Informe Categoria Infantil', [], $smb->informeCategoria('Infantil'));
+			//PDF::createPDF('Informe Categorias', [], $smb->informesCategorias());
+			//PDF::createPDF('Informe Categorias Club', [], $smb->informesCategoriasClub());
+			PDF::createPDF('Informe Categoria Infantil Club', [], $smb->informeCategoriaClub('Infantil'));
 			$smb->deleteAll();
 			$smb->closeConnection();
 		}
