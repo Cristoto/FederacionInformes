@@ -213,7 +213,16 @@ class Consultas {
         return $stmt->fetchAll();
     }
     
-    public function asignarPuntos($bloqueo, $cantParticipantes, $puntInicial, $difPuntos, $temporada) 
+    /**
+     * Recibe los datos proporcionados por el usuario y los usa para calcular y asignar los puntos a los competidores
+     * 
+     * @param  string $bloqueo
+     * @param  string $cantParticipantes
+     * @param  string $puntInicial
+     * @param  string $difPuntos
+     * @param  string $temporada
+     */
+    public function asignarPuntos($bloqueo, $cantParticipantes, $puntInicial, $difPuntos, $temporada) : void
     {
         $puntos = [];
         array_push($puntos, $puntInicial);
@@ -246,10 +255,9 @@ class Consultas {
             }
         }
         $this->insertarPuntosCompetidores($compeditoresPuntos);
-        //return $compeditoresPuntos;
     }
 
-    public function getPosiciones($prueba, $sexo, $categoria, $competicion, $cantParticipantes, $puntInicial, $difPuntos, $bloqueo)
+    public function getPosiciones($prueba, $sexo, $categoria, $competicion, $cantParticipantes, $puntInicial, $difPuntos, $bloqueo) : array
     {
         $stmt = $this->pdo->prepare('SELECT id, nombre, apellidos, anio, club, tipoPiscina, tiempo, tiempoConvertido, posicion, exclusion, descalificado FROM competidores WHERE prueba = :prueba AND sexo = :sexo AND categoria = :categoria AND competicion = :competicion ORDER BY posicion ASC');
         $stmt->bindParam(':prueba', $prueba, PDO::PARAM_STR, 60);
@@ -346,6 +354,16 @@ class Consultas {
             $stmt->execute();      
         }        
     }
+
+    public function informesCategorias() : array
+    {
+        $categorias = $this->getCategoria();
+        $informeCategorias = [];
+        foreach ($categorias as $categoria) {
+            $informeCategorias[] = $this->informeCategoria($categoria['categoria']);
+        }
+        return $informeCategorias;
+    }
     
     /**
      * Devuelve un array con la estructura necesaria para generar el informe por categorías.
@@ -359,34 +377,20 @@ class Consultas {
         $pruebas = $this->getPruebas();
         
         $informe = [];
-
         foreach ($pruebas as $prueba) {
             foreach ($generos as $genero) {
-                $compeditor = $this->getCompetidoresCategoria($categoria, $genero['sexo'], $prueba['prueba']);
-                if(sizeof($compeditor) != 0){
-                    if(sizeof($compeditor) > 1) {
-                        foreach ($compeditor as $value) {
-                            $informe[] = $value;
-                        }
-                    }
-                    else
-                        $informe[] = $compeditor[0];
-                }
+                $competidor = [
+                    'Categoria' => $categoria,
+                    'Prueba' => $prueba['prueba'],
+                    'Genero' => $genero['sexo'],
+                    'Competidores' => $this->getCompetidoresCategoria($categoria, $genero['sexo'], $prueba['prueba'])
+                ];
+                if(!empty($competidor['Competidores']))
+                    $informe[] = $competidor;
             }            
         }
-
         return $informe;
     }   
-
-    public function informesCategorias()
-    {
-        $categorias = $this->getCategoria();
-        $informeCategorias = [];
-        foreach ($categorias as $categoria) {
-            $informeCategorias[] = $this->informeCategoria($categoria['categoria']);
-        }
-        return $informeCategorias;
-    }
 
     /**
      * Obtiene todos los competidores correspondientes a los parámetros indicados.
@@ -396,21 +400,18 @@ class Consultas {
      * @param string $prueba
      * @return array
      */
-    public function getCompetidoresCategoria(string $categoria, string $sexo, string $prueba) : array
+    public function getCompetidoresCategoria(string $categoria, string $sexo, string $prueba)
     {
-        $stmt = $this->pdo->prepare("SELECT nombre, apellidos, anio, club, tipoPiscina, tiempoConvertido, puntos FROM competidores_puntos WHERE categoria = :categoria AND sexo = :sexo AND prueba = :prueba");
-        $stmt->bindParam(':categoria', $categoria, PDO::PARAM_STR, 20);
-        $stmt->bindParam(':sexo', $sexo, PDO::PARAM_STR, 1);
-        $stmt->bindParam(':prueba', $prueba, PDO::PARAM_STR, 60);
+        $competidores = [];
+        $stmt = $this->pdo->prepare("SELECT nombre, apellidos, anio, club, tipoPiscina, tiempoConvertido, puntos FROM competidores_puntos WHERE categoria = ? AND sexo = ? AND prueba = ?");
+        $stmt->bindParam(1, $categoria);
+        $stmt->bindParam(2, $sexo);
+        $stmt->bindParam(3, $prueba);
         $stmt->execute();
 
         $row = $stmt->fetchAll();
-        $competidores = [];
         foreach($row as $fil) {
             $competidor = [
-                'categoria' => $categoria,
-                'prueba' => $prueba,
-                'sexo' => $sexo,
                 'nombre' => $fil['nombre'], 
                 'apellidos' => $fil['apellidos'], 
                 'anio' => $fil['anio'], 
@@ -425,41 +426,52 @@ class Consultas {
         return $competidores;
     }
 
-    public function informeCategoriaClub(string $categoria)
+    public function informeCategoriaClub(string $categoria) : array
     {
         $generos = $this->getGeneros();
         $pruebas = $this->getPruebas();
 
-        $competidores = [];
+        $informe = [];
         foreach ($pruebas as $prueba) {
             foreach ($generos as $genero) {
-                $stmt = $this->pdo->prepare("SELECT club, tipoPiscina, tiempoConvertido, puntos, exclusion, descalificado FROM competidores_puntos WHERE categoria = ? AND sexo = ? AND prueba = ? GROUP BY club ORDER BY puntos DESC");
-                $stmt->bindParam(1, $categoria);
-                $stmt->bindParam(2, $genero['sexo']);
-                $stmt->bindParam(3, $prueba['prueba']);
-                $stmt->execute();
-
-                $row = $stmt->fetchAll();
-                foreach($row as $fil) {
-                    $competidor = [
-                        'categoria' => $categoria,
-                        'prueba' => $prueba['prueba'],
-                        'sexo' => $genero['sexo'],
-                        'club' => $fil['club'], 
-                        'tipoPiscina' => $fil['tipoPiscina'],
-                        'tiempoConvertido' => $fil['tiempoConvertido'],
-                        'puntos' => $fil['puntos'],
-                        'exclusion' => $fil['exclusion'],
-                        'descalificado' => $fil['descalificado']
-                    ];
-                    array_push($competidores, $competidor);
-                }
+                $competidor = [
+                    'Categoria' => $categoria,
+                    'Prueba' => $prueba['prueba'],
+                    'Genero' => $genero['sexo'],
+                    'Competidores' => $this->getCompetidoresCategoriaClub($categoria, $genero['sexo'], $prueba['prueba'])
+                ];
+                if(!empty($competidor['Competidores']))
+                    $informe[] = $competidor;
             }
+        }
+        return $informe;
+    }
+
+    public function getCompetidoresCategoriaClub(string $categoria, string $sexo, string $prueba)
+    {        
+        $competidores = [];
+        $stmt = $this->pdo->prepare("SELECT club, tipoPiscina, tiempoConvertido, puntos, exclusion, descalificado FROM competidores_puntos WHERE categoria = ? AND sexo = ? AND prueba = ? GROUP BY club ORDER BY puntos DESC");
+        $stmt->bindParam(1, $categoria);
+        $stmt->bindParam(2, $sexo);
+        $stmt->bindParam(3, $prueba);
+        $stmt->execute();
+
+        $row = $stmt->fetchAll();
+        foreach($row as $fil) {
+            $competidor = [
+                'Club' => $fil['club'], 
+                'Piscina' => $fil['tipoPiscina'],
+                'Marca' => $fil['tiempoConvertido'],
+                'Puntos' => $fil['puntos'],
+                'Exclusion' => $fil['exclusion'],
+                'Descalificado' => $fil['descalificado']
+            ];
+            array_push($competidores, $competidor);
         }
         return $competidores;
     }
 
-    public function informesCategoriasClub() 
+    public function informesCategoriasClub() : array
     {
         $categorias = $this->getCategoria();
         $informeCategoriaClub = [];
@@ -534,7 +546,7 @@ class Consultas {
      *
      * @return void
      */
-    public function deleteAll()
+    public function deleteAll() : void
     {
         $stmt = $this->pdo->prepare('TRUNCATE TABLE competidores');
         $stmt->execute();
@@ -554,12 +566,12 @@ class Consultas {
 }
     //$consulta = new Consultas();
     //header('Content-Type: application/json');
-    //echo json_encode($consulta->asignarPuntos('', 5, 40, 4, ''));
-    //var_dump($consulta->asignarPuntos('', 5, 40, 4, ''));
     //echo json_encode($consulta->informeCategoria('Infantil'));
+    //var_dump($consulta->informeCategoria('Infantil'));
     //echo json_encode($consulta->informeCategoriaClub('Infantil'));
     //var_dump($consulta->informeCategoriaClub('Infantil'));
     //echo json_encode($consulta->getCompetidoresCategoria('Infantil', 'F', '50 m. remolque de maniquí pequeño'));
     //var_dump($consulta->getPosiciones('50 m. remolque de maniquí', 'M', 'Absoluto', '5º Jornada Liga - CANARIAS', 7, 20, 2, 'N'));
     //var_dump($consulta->informesCategorias());
+    //var_dump(key($consulta->getAllCompetidores()));
 ?>
