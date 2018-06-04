@@ -65,7 +65,7 @@ class PDF extends FPDF
      * @return void
      */
     public function loadTable(array $data){
-        $widthCells = 40;
+        $widthCells = 50;
     
         //Competition
         foreach ($data as $competiciones) {
@@ -108,7 +108,6 @@ class PDF extends FPDF
                 }
             }
             $this->AddPage('L');
-
         }
         // Closing line
         //$this->Cell($widthCells*count($header),0,'','T');
@@ -122,13 +121,19 @@ class PDF extends FPDF
      * @param array $content array with the content of the table
      * @return void
      */
-    public static function createPDF(string $title,array $data){
+    public static function createPDF(string $title,array $data, bool $global){
         ob_start();
             $pdf = new PDF($title);
             $pdf->AliasNbPages();
             $pdf->AddPage('L');
             $pdf->SetFont('Times','',12);
-            $pdf->loadTable($data);
+            if(!$global){
+                $pdf->loadTable($data);
+            }else{
+                foreach ($data as $value) {
+                    $pdf->loadTable($value);
+                }
+            }
             $pdf->Output('D', $title . '.pdf', true);
         ob_end_flush(); 
         ob_end_clean(); 
