@@ -7,6 +7,9 @@
 	
 	require_once __DIR__ . '/vendor/autoload.php';
 	
+	$smb = new Consultas();
+	$smb->deleteAll();
+
 	if (isset($_POST['subidaFile'])){
 		//Mime types for validations
 		$mimes = array('application/vnd.ms-excel','text/plain','text/csv','text/tsv');
@@ -16,7 +19,7 @@
 		$excel->loadDataIntoBD();
 		Excel::deleteFiles();
 	}
-	$smb = new Consultas();
+	
 ?>
 <!DOCTYPE html>
 <html lang="es">
