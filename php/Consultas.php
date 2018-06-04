@@ -73,6 +73,26 @@ class Consultas {
                 descalificado CHAR(2),
                 CONSTRAINT pk_competidores PRIMARY KEY (id)
             )ENGINE = InnoDb;');
+
+           $this->pdo->exec('CREATE TABLE IF NOT EXISTS competidores_puntos (
+                id INT NOT NULL, 
+                nombre VARCHAR(20), 
+                apellidos VARCHAR(50), 
+                anio SMALLINT, 
+                sexo CHAR(1), 
+                club VARCHAR(60), 
+                competicion VARCHAR(60), 
+                prueba VARCHAR(60), 
+                categoria VARCHAR(20), 
+                tiempo VARCHAR(8), 
+                tiempoConvertido VARCHAR(8), 
+                posicion TINYINT, 
+                exclusion VARCHAR(20), 
+                descalificado CHAR(2), 
+                tipoPiscina CHAR(3), 
+                puntos INT, 
+                CONSTRAINT pk_competidores_puntos PRIMARY KEY (id));'
+            );
         }
         catch(PDOException $e) {
             echo $e->getMessage();
@@ -332,7 +352,6 @@ class Consultas {
 
     public function insertarPuntosCompetidores($compeditoresPuntos) 
     {
-        $stmt = $this->pdo->exec('CREATE TABLE IF NOT EXISTS competidores_puntos (id INT NOT NULL, nombre VARCHAR(20), apellidos VARCHAR(50), anio SMALLINT, sexo CHAR(1), club VARCHAR(60), competicion VARCHAR(60), prueba VARCHAR(60), categoria VARCHAR(20), tiempo VARCHAR(8), tiempoConvertido VARCHAR(8), posicion TINYINT, exclusion VARCHAR(20), descalificado CHAR(2), tipoPiscina CHAR(3), puntos INT, CONSTRAINT pk_competidores_puntos PRIMARY KEY (id));');
         foreach ($compeditoresPuntos as $compeditor) {
             $stmt = $this->pdo->prepare('INSERT INTO competidores_puntos VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
             $stmt->bindParam(1, $compeditor['id']);
