@@ -77,7 +77,7 @@ class PDF extends FPDF
             $this->SetFont('','B');
             foreach ($competiciones as $key => $content) {
                 if($key !== 'Competidores'){
-                    $this->Cell($widthCells,7,$content,0,0,'C',true);
+                    $this->Cell(80 ,7,utf8_decode($content),0,0,'C',true);
                 }
             }
             $this->Ln(10);
