@@ -133,9 +133,7 @@
 			//PDF::createPDF('Todos los competidores', $smb->getAllCompetidores());	
 			//PDF::createPDF('Informe Categoria Infantil', $smb->informeCategoria('Infantil'));
 
-			//TODO este no va
-			var_dump();
-			//PDF::createPDF('Informe Categorias', $smb->informesCategorias());
+			PDF::createPDF('Informe Categorias', $smb->informesCategorias()[0]);
 			
 			//PDF::createPDF('Informe Categorias Club', $smb->informesCategoriasClub()[0]);
 			//PDF::createPDF('Informe Categoria Infantil Club', $smb->informeCategoriaClub('Infantil'));
