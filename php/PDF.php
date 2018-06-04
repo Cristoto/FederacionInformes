@@ -94,9 +94,11 @@ class PDF extends FPDF
                         $this->Cell(30,7,'T. convertido',1,0,'C',true);
                     else if($key == 'tipoPiscina')
                         $this->Cell(25,7,$key,1,0,'C',true);
-                    else
+                    else{
                         $this->Cell($widthCells,7,$key,1,0,'C',true);
+                    }
                 }
+                break;
             }
             $this->Ln();
 
@@ -115,7 +117,7 @@ class PDF extends FPDF
                                 $this->Cell(15, 6, utf8_decode($dato), 'LR', 0, 'L', $fill);
                             else if($llave == 'nombre')
                                 $this->Cell(40, 6, utf8_decode($dato), 'LR', 0, 'L', $fill);
-                            else if($key == 'puntos')
+                            else if($llave == 'puntos')
                                 $this->Cell(15, 6, utf8_decode($dato), 'LR', 0, 'L', $fill);
                             else if($llave == 'tiempoConvertido')
                                 $this->Cell(30, 6, utf8_decode($dato), 'LR', 0, 'L', $fill);
@@ -156,7 +158,7 @@ class PDF extends FPDF
                     $pdf->loadTable($value);
                 }
             }
-            $pdf->Output('D', $title . '.pdf', true);
+            $pdf->Output('D', $title . '.pdf', true, 'I');
         ob_end_flush(); 
         ob_end_clean(); 
     }
