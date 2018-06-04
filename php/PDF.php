@@ -65,7 +65,7 @@ class PDF extends FPDF
      * @return void
      */
     public function loadTable(array $data){
-        $widthCells = 50;
+        $widthCells = 65;
     
         //Competition
         foreach ($data as $competiciones) {
@@ -84,7 +84,18 @@ class PDF extends FPDF
             //Header
             foreach ($data[0]['Competidores'] as $competidor) {
                 foreach ($competidor as $key => $value) {
-                    $this->Cell($widthCells,7,$key,1,0,'C',true);
+                    if($key == 'anio')
+                        $this->Cell(15,7,$key,1,0,'C',true);
+                    else if($key == 'nombre')
+                        $this->Cell(40,7,$key,1,0,'C',true);
+                    else if($key == 'puntos')
+                        $this->Cell(15,7,$key,1,0,'C',true);
+                    else if($key == 'tiempoConvertido')
+                        $this->Cell(30,7,'T. convertido',1,0,'C',true);
+                    else if($key == 'tipoPiscina')
+                        $this->Cell(25,7,$key,1,0,'C',true);
+                    else
+                        $this->Cell($widthCells,7,$key,1,0,'C',true);
                 }
             }
             $this->Ln();
@@ -99,8 +110,19 @@ class PDF extends FPDF
             foreach ($competiciones as $key => $content) {
                 if($key == 'Competidores'){
                     foreach ($content as $competidor) {
-                        foreach ($competidor as $dato) {
-                            $this->Cell($widthCells, 6, utf8_decode($dato), 'LR', 0, 'L', $fill);
+                        foreach ($competidor as $llave => $dato) {
+                            if($llave == 'anio')
+                                $this->Cell(15, 6, utf8_decode($dato), 'LR', 0, 'L', $fill);
+                            else if($llave == 'nombre')
+                                $this->Cell(40, 6, utf8_decode($dato), 'LR', 0, 'L', $fill);
+                            else if($key == 'puntos')
+                                $this->Cell(15, 6, utf8_decode($dato), 'LR', 0, 'L', $fill);
+                            else if($llave == 'tiempoConvertido')
+                                $this->Cell(30, 6, utf8_decode($dato), 'LR', 0, 'L', $fill);
+                            else if($llave == 'tipoPiscina')
+                                $this->Cell(25, 6, utf8_decode($dato), 'LR', 0, 'L', $fill);
+                            else
+                                $this->Cell($widthCells, 6, utf8_decode($dato), 'LR', 0, 'L', $fill);
                         }
                         $this->Ln();
                         $fill = !$fill;
