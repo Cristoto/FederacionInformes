@@ -80,38 +80,36 @@ class PDF extends FPDF
                     $this->Cell($widthCells,7,$content,0,0,'C',true);
                 }
             }
-            $this->Ln(20);
+            $this->Ln(10);
             //Header
             foreach ($data[0]['Competidores'] as $competidor) {
                 foreach ($competidor as $key => $value) {
                     $this->Cell($widthCells,7,$key,1,0,'C',true);
                 }
             }
+            $this->Ln();
+
             // Color and font restoration
             $this->SetFillColor(224,235,255);
             $this->SetTextColor(0);
             $this->SetFont('Arial');
 
+            //DATA
+            $fill = false;
             foreach ($competiciones as $key => $content) {
                 if($key == 'Competidores'){
                     foreach ($content as $competidor) {
-                        var_dump($competidor);
+                        foreach ($competidor as $dato) {
+                            $this->Cell($widthCells, 6, utf8_decode($dato), 'LR', 0, 'L', $fill);
+                        }
+                        $this->Ln();
+                        $fill = !$fill;
                     }
                 }
             }
+            $this->AddPage('L');
 
         }
-
-        // Data
-        /*$fill = false;
-        foreach($data as $content)
-        {
-            foreach ($content as $value) {
-                $this->Cell($widthCells, 6, utf8_decode($value), 'LR', 0, 'L', $fill);
-            }
-            $this->Ln();
-            $fill = !$fill;
-        }*/
         // Closing line
         //$this->Cell($widthCells*count($header),0,'','T');
     }
