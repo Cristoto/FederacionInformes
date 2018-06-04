@@ -64,34 +64,54 @@ class PDF extends FPDF
      * @param array $data
      * @return void
      */
-    public function loadTable(array $header, array $data){
+    public function loadTable(array $data){
         $widthCells = 40;
-        // Colors, line width and bold font
-        $this->SetFillColor(255,0,0);
-        $this->SetTextColor(255);
-        $this->SetDrawColor(128,0,0);
-        $this->SetLineWidth(.3);
-        $this->SetFont('','B');
-        // Header
-        for($i=0;$i<count($header);$i++)
-            $this->Cell($widthCells,7,$header[$i],1,0,'C',true);
-        $this->Ln();
-        // Color and font restoration
-        $this->SetFillColor(224,235,255);
-        $this->SetTextColor(0);
-        $this->SetFont('Arial');
-        // Data
-        $fill = false;
-        foreach($data as $content)
-        {
-            foreach ($content as $value) {
-                $this->Cell($widthCells, 6, utf8_decode($value), 'LR', 0, 'L', $fill);
+    
+        //Competition
+        foreach ($data as $competiciones) {
+            // Colors, line width and bold font
+            $this->SetFillColor(255,0,0);
+            $this->SetTextColor(255);
+            $this->SetDrawColor(128,0,0);
+            $this->SetLineWidth(.3);
+            $this->SetFont('','B');
+            foreach ($competiciones as $key => $content) {
+                if($key !== 'Competidores'){
+                    $this->Cell($widthCells,7,$content,0,0,'C',true);
+                }
+            }
+            $this->Ln(10);
+            //Header
+            foreach ($data[0]['Competidores'] as $competidor) {
+                foreach ($competidor as $key => $value) {
+                    $this->Cell($widthCells,7,$key,1,0,'C',true);
+                }
             }
             $this->Ln();
-            $fill = !$fill;
+
+            // Color and font restoration
+            $this->SetFillColor(224,235,255);
+            $this->SetTextColor(0);
+            $this->SetFont('Arial');
+
+            //DATA
+            $fill = false;
+            foreach ($competiciones as $key => $content) {
+                if($key == 'Competidores'){
+                    foreach ($content as $competidor) {
+                        foreach ($competidor as $dato) {
+                            $this->Cell($widthCells, 6, utf8_decode($dato), 'LR', 0, 'L', $fill);
+                        }
+                        $this->Ln();
+                        $fill = !$fill;
+                    }
+                }
+            }
+            $this->AddPage('L');
+
         }
         // Closing line
-        $this->Cell($widthCells*count($header),0,'','T');
+        //$this->Cell($widthCells*count($header),0,'','T');
     }
 
     /**
@@ -102,14 +122,15 @@ class PDF extends FPDF
      * @param array $content array with the content of the table
      * @return void
      */
-    public static function createPDF(string $title, array $header, array $content){
+    public static function createPDF(string $title,array $data){
         ob_start();
             $pdf = new PDF($title);
             $pdf->AliasNbPages();
             $pdf->AddPage('L');
             $pdf->SetFont('Times','',12);
-            $pdf->loadTable($header, $content);
+            $pdf->loadTable($data);
             $pdf->Output('D', $title . '.pdf', true);
         ob_end_flush(); 
+        ob_end_clean(); 
     }
 }
