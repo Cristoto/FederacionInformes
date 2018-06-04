@@ -21,7 +21,7 @@ class PDF extends FPDF
      */
     function __construct(string $title){
         parent::__construct();
-        $this->title = $title;
+        $this->title = utf8_decode($title);
     }
 
     /**
@@ -85,7 +85,7 @@ class PDF extends FPDF
         foreach($data as $content)
         {
             foreach ($content as $value) {
-                $this->Cell($widthCells, 6, $value, 'LR', 0, 'L', $fill);
+                $this->Cell($widthCells, 6, utf8_decode($value), 'LR', 0, 'L', $fill);
             }
             $this->Ln();
             $fill = !$fill;
