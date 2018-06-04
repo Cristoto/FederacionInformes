@@ -242,7 +242,7 @@ class Consultas {
      * @param  string $difPuntos
      * @param  string $temporada
      */
-    public function asignarPuntos(string $bloqueo, integer $cantParticipantes, integer $puntInicial, integer $difPuntos, integer $temporada) : void
+    public function asignarPuntos(string $bloqueo, string $cantParticipantes, string $puntInicial, string $difPuntos, $temporada) : void
     {        
         $generos = $this->getGeneros();
         $pruebas = $this->getPruebas();
@@ -279,14 +279,14 @@ class Consultas {
      * @param  string $sexo              
      * @param  string $categoria         
      * @param  string $competicion       
-     * @param  int $cantParticipantes 
-     * @param  int $puntInicial       
-     * @param  int $difPuntos         
+     * @param  string $cantParticipantes 
+     * @param  string $puntInicial       
+     * @param  string $difPuntos         
      * @param  string $bloqueo          
      * @return array Devuelve un array con todos los competidores correspondientes a esa prueba, categoria y 
      *                        genero, con los puntos asignados segun su posición               
      */
-    public function getPosiciones(string $prueba, string $sexo, string $categoria, string $competicion, integer $cantParticipantes, integer $puntInicial, integer $difPuntos, string $bloqueo) : array
+    public function getPosiciones(string $prueba, string $sexo, string $categoria, string $competicion, string $cantParticipantes, string $puntInicial, string $difPuntos, string $bloqueo) : array
     {
         $stmt = $this->pdo->prepare('SELECT id, nombre, apellidos, anio, club, tipoPiscina, tiempo, tiempoConvertido, posicion, exclusion, descalificado FROM competidores WHERE prueba = :prueba AND sexo = :sexo AND categoria = :categoria AND competicion = :competicion ORDER BY posicion ASC');
         $stmt->bindParam(':prueba', $prueba, PDO::PARAM_STR, 60);
