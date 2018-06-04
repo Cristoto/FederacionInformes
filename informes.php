@@ -8,8 +8,7 @@
 	require_once __DIR__ . '/vendor/autoload.php';
 	
 	$smb = new Consultas();
-	//$smb->deleteAll();
-
+	
 	if (isset($_POST['subidaFile'])){
 		//Mime types for validations
 		$mimes = array('application/vnd.ms-excel','text/plain','text/csv','text/tsv');
@@ -129,12 +128,10 @@
 
 			//$p = $smb->informeCategoria('Absoluto');
 			$smb->asignarPuntos($usaBloqueo, $cantParticipantes, $puntInicial, $difPuntos, $temporada);
-			//PDF::createPDF('Todos los competidores', $smb->getAllCompetidores(), true);	
 			//PDF::createPDF('Informe Categoria Infantil', $smb->informeCategoria('Infantil'), false);
-			//PDF::createPDF('Informe Categorias', $smb->informesCategorias(), true);
-			
+			PDF::createPDF('Informe Categorias', $smb->informesCategorias(), true);
 			//PDF::createPDF('Informe Categorias Club', $smb->informesCategoriasClub(), true);
-			//PDF::createPDF('Informe Categoria Infantil Club', $smb->informeCategoriaClub('Infantil'));
+			//PDF::createPDF('Informe Categoria Infantil Club', $smb->informeCategoriaClub('Infantil'), false);
 
 			$smb->deleteAll();
 			$smb->closeConnection();
